@@ -1,38 +1,34 @@
 import React from "react";
-import { Navigate, createBrowserRouter } from "react-router-dom";
-import Login from "./views/Login";
-import GuestLayout from './components/GuestLayout'
-import Dashboard from "./views/Dashboard";
-import AdminDashboard from "./adminViews/AdminDashboard";
-import TeacherDashboard from "./teacherviews/TeacherDashboard";
+import { createBrowserRouter } from "react-router-dom";
+import Login from "./Login";
+import AdminDashboard from "./admin/adminViews/AdminDashboard";
+import TeacherDashboard from "./teacher/teacherviews/TeacherDashboard";
+import StudentDashboard from "./student/studentviews/StudentDashboard";
+import DefaultLayout from "./components/DefaultLayout";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Dashboard />},
-  
-      {
-        path: '/dashboard',
-        element: <Navigate to="/" />
-      },
-      {
+    {
+        path: "/login",
+        element: <Login />,
+    },
+    {
         path: "/",
-        element: <Dashboard />,
-      },
-      {
-        path: "/admin/dashboard",
-        element: <AdminDashboard />,
-      },
-      {
-        path: "/teacher/dashboard",
-        element: <TeacherDashboard />,
-      },
- 
-
-	{
-		path: "/login",
-		element: <Login />,
-	},
+        element: <DefaultLayout />,
+        children: [
+            {
+                path: "/admin/dashboard",
+                element: <AdminDashboard />,
+            },
+            {
+                path: "/teacher/dashboard",
+                element: <TeacherDashboard />,
+            },
+            {
+                path: "/student/dashboard",
+                element: <StudentDashboard />,
+            },
+        ],
+    },
 ]);
 
 export default router;
