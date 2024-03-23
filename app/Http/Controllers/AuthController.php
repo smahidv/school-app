@@ -6,10 +6,11 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
-    public function __invoke(Request $request): JsonResponse
+    public function login(Request $request): JsonResponse
     {
         /**  @var User $user */
         $user = User::query()->where('email', $request->get('email'))->first();
@@ -29,4 +30,19 @@ class LoginController extends Controller
             'message' => 'Email or password are wrong'
         ], 422);
     }
+
+
+    public function logout(Request $request)
+    {
+      /** @var User $user */
+      $user = Auth::user();
+      // Revoke the token that was used to authenticate the current request...
+      $user->currentAccessToken()->delete();
+  
+      return response([
+        'success' => true
+      ]);
+    }
+  
 }
+

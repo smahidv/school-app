@@ -14,25 +14,29 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+
         $users  = [
             [
                 'first name' => 'oumaimaAdmin',
                 'last name' => 'smahi',
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make(1234567),
-                'role' => User::ROLE_ADMIN
+                'role' => User::ROLE_ADMIN,
+                'image'=>'images/admin.jpg',
             ],[
                 'first name' => 'oumaimateacher',
                 'last name' => 'smahi',
                 'email' => 'teacher@gmail.com',
                 'password' => Hash::make(1234567),
-                'role' => User::ROLE_TEACHER
+                'role' => User::ROLE_TEACHER,
+                'image'=>''
             ],[
                 'first name' => 'ahmedstudent',
                 'last name' => 'salali',
                 'email' => 'student@gmail.com',
                 'password' => Hash::make(1234567),
-                'role' => User::ROLE_STUDENT
+                'role' => User::ROLE_STUDENT,
+                'image'=>''
             ]
         ];
         User::query()->insert($users);

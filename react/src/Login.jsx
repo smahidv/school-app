@@ -32,7 +32,7 @@ export default function Login() {
                 setCurrentUser(data.user);
                 setUserToken(data.token);
                 if (data.user.role === 1) {
-                    navigate("/admin/dashboard");
+                    navigate("/");
                 } else if (data.user.role === 2) {
                     navigate("/teacher/dashboard");
                 } else if (data.user.role === 3) {

@@ -2,6 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\StudentMiddleware;
+use App\Http\Middleware\TeacherMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -67,7 +70,8 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware = [
         'admin' => AdminMiddleware::class,
-        'user' => UserMiddleware::class,
+        'teacher' => TeacherMiddleware::class,
+        'student'=>StudentMiddleware::class,
     ];
     
 }

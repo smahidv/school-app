@@ -7,6 +7,11 @@ import StudentLayout from "./users/student/studentComponents/StudentLayout";
 import AdminDashboard from "./users/admin/adminViews/AdminDashboard"
 import TeacherDashboard from "./users/teacher/teacherviews/TeacherDashboard"
 import StudentDashboard from "./users/student/studentViews/StudentDashboard"
+import AdminStudents from "./users/admin/adminViews/AdminStudents";
+import AdminTeachers from "./users/admin/adminViews/AdminTeachers";
+import Admingrades from "./users/admin/adminViews/Admingrades";
+import AdminFields from "./users/admin/adminViews/AdminFields";
+import FieldsView from "./users/admin/adminViews/FieldsView";
 
 
 const router = createBrowserRouter([
@@ -19,8 +24,28 @@ const router = createBrowserRouter([
         element: <AdminLayout />,
         children: [
             {
-                path: "/admin/dashboard",
+                path: "/",
                 element: <AdminDashboard />,
+            },
+            {
+                path: "/admin/fields",
+                element: <AdminFields />,
+            },
+            {
+                path: "/fields/create",
+                element: <FieldsView />,
+            },
+            {
+                path: "/admin/students",
+                element: <AdminStudents />,
+            },
+            {
+                path: "/admin/teachers",
+                element: <AdminTeachers />,
+            },
+            {
+                path: "/admin/grades",
+                element: <Admingrades />,
             },
             
         ],
