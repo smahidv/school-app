@@ -36,6 +36,10 @@ const router = createBrowserRouter([
                 element: <FieldsView />,
             },
             {
+                path: "/fields/create/:id",
+                element: <FieldsView />,
+            },
+            {
                 path: "/admin/students",
                 element: <AdminStudents />,
             },

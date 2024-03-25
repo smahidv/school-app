@@ -1,6 +1,6 @@
 import { NavLink, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import axiosClient from "../../../axios";
 
 export default function AdminLayout() {
