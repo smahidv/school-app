@@ -30,12 +30,12 @@ export default function AdminFields() {
 
     return (
         <>
-            {loading && <div className="text-lg">Loading...</div>}
+            <div className=" flex justify-start">
+                <BlackButton to="/fields/create" content="add field" />
+            </div>
+            {loading && <div className="text-lg mt-12">Loading...</div>}
             {!loading && (
                 <>
-                    <div className=" flex justify-start">
-                        <BlackButton to="/fields/create" content="add field" />
-                    </div>
                     <div className="grid gap-6 items-center mt-10 md:grid-cols-[repeat(auto-fill,_300px)]">
                         {fields.length > 0 &&
                             fields.map((field) => (
@@ -48,13 +48,12 @@ export default function AdminFields() {
                                             {field.name}
                                         </p>
                                         <div className="flex gap-3 items-start">
-                                          <Link to={`/fields/create/${field.id}`}>
-                                          <PencilIcon 
-                                            className="w-4 cursor-pointer"
-                                          
-                                             />
-                                          </Link>
-                                           
+                                            <Link
+                                                to={`/fields/create/${field.id}`}
+                                            >
+                                                <PencilIcon className="w-4 cursor-pointer" />
+                                            </Link>
+
                                             <TrashIcon
                                                 onClick={() => {
                                                     onDeleteClick(field.id);

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import BlackButton from "../../../core/BlackButton";
 import DeleteButton from "../../../core/DeleteButton";
-import ModulesEditor from "../adminComponents/ModulesEditor";
 import { v4 as uuidv4 } from "uuid";
 import axiosClient from "../../../axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 
 export default function FieldsView() {
     const { id } = useParams();
@@ -16,13 +15,17 @@ export default function FieldsView() {
         acronym: "",
         levels: [],
     });
+
     const [level, setLevel] = useState([...fields.levels]);
-    const addLevel = (e) => {
+
+    const addLevel = (e, index) => {
         e.preventDefault();
-        fields.levels.push({
+        index = index !== undefined ? index : fields.levels.length;
+        fields.levels.splice(index, 0, {
             id: uuidv4(),
             name: "",
-            modules: [],
+            modules: [{ id: uuidv4(), name: "" }],
+            classrooms: [{ id: uuidv4(), name: "" }],
         });
         setFields({
             ...fields,
@@ -32,7 +35,6 @@ export default function FieldsView() {
     const deleteLevel = (lev) => {
         fields.levels = fields.levels.filter((level) => level.id != lev.id);
         setFields({ ...fields });
-        debugger;
     };
 
     const levelChange = (lev) => {
@@ -65,12 +67,13 @@ export default function FieldsView() {
             // } else {
             //   showToast("The survey was created");
             // }
-        }).catch((err) => {
-            if (err && err.response) {
-                setError(err.response.data.message);
-            }
-            console.log(err, err.response);
         });
+        // .catch((err) => {
+        //     if (err && err.response) {
+        //         setError(err.response.data.message);
+        //     }
+        //     console.log(err, err.response);
+        // });
     };
 
     useEffect(() => {
@@ -82,24 +85,30 @@ export default function FieldsView() {
             });
         }
     }, []);
+    const links = [
+        { path: "/fields/create/classrooms", text: "classrooms" },
+        { path: "/fields/create/modules", text: "modules" },
+    ];
 
     return (
         <>
+            {/* <pre>{JSON.stringify(fields, undefined, 2)}</pre> */}
+
             {loading && <div className="text-center text-lg">Loading...</div>}
             {!loading && (
                 <form action="#" method="post" onSubmit={onSubmit}>
-                    <div className="shadow-xl pb-6  relative after:absolute after:w-full after:h-[0.1px] after:bg-[rgb(202,202,203)] after:left-0 after:top-9 after:rounded-full">
+                    <div className="shadow-xl mb-20 pb-6  relative after:absolute after:w-full after:h-[0.1px] after:bg-[rgb(202,202,203)] after:left-0 after:top-9 after:rounded-full">
                         <div className="px-8 ">
                             <div className="  mb-8 font-bold ">
                                 {!id ? "Create new Field" : "Update field"}
                             </div>
-                            <div className="grid gap-4">
+                            <div className="grid gap-8">
                                 {/* /////////////////////////////fields////////////////////////////// */}
                                 <div>
-                                    <div className="font-semibold mb-3">
-                                        Fields
+                                    <div className="font-semibold mb-3 text-lg">
+                                        Field
                                     </div>
-                                    <div className="flex gap-4">
+                                    <div className="flex gap-6">
                                         <input
                                             className="bg-[rgb(247,247,247)] px-3 py-2 md:w-full  max-w-[420px] outline-none border-solid border-[1.34px] border-gray-300 rounded-md text-[0.85rem]"
                                             type="text"
@@ -115,7 +124,7 @@ export default function FieldsView() {
                                         <input
                                             className="bg-[rgb(247,247,247)] px-3 py-1  w-[100px]  outline-none border-solid border-[1.34px] border-gray-300 rounded-md text-[0.85rem]"
                                             type="text"
-                                            placeholder="acronymonym"
+                                            placeholder="acronym"
                                             value={fields.acronym}
                                             onChange={(ev) =>
                                                 setFields({
@@ -126,28 +135,32 @@ export default function FieldsView() {
                                             }
                                             maxLength="3"
                                         />
+                                        <BlackButton
+                                            content="+ add levels"
+                                            onClick={addLevel}
+                                        />
                                     </div>
                                 </div>
 
                                 {/* /////////////////////////////levels////////////////////////////// */}
                                 <div>
-                                    <div className="flex justify-between items-center ">
-                                        <div className="font-semibold mb-3">
-                                            Levels
-                                        </div>
-                                        <BlackButton
-                                            content="+ add level"
-                                            onClick={addLevel}
-                                        />
-                                    </div>
-                                    <div className="grid gap-3  ">
+                                    <div className="grid ">
                                         {fields.levels.length > 0 ? (
                                             fields.levels.map((l, index) => (
                                                 <div
                                                     key={l.id}
                                                     index={index}
-                                                    className="grid gap-3 relative after:absolute after:w-full after:h-[1.5px] after:bg-[rgb(236,236,237)] after:left-0 after:bottom-3 after:rounded-full"
+                                                    className="grid gap-4 mb-16 "
                                                 >
+                                                    <div className="flex justify-between items-center ">
+                                                        <div className="font-semibold  text-lg">
+                                                            Level
+                                                        </div>
+                                                        <BlackButton
+                                                            content="+ add level"
+                                                            onClick={(e) => addLevel(e, index+1)}
+                                                        />
+                                                    </div>
                                                     <div className="flex gap-3 items-center">
                                                         <p>{index + 1}.</p>
                                                         <input
@@ -169,13 +182,88 @@ export default function FieldsView() {
                                                             }
                                                         />
                                                     </div>
-                                                    <ModulesEditor
-                                                        level={l}
-                                                        levelChange={
-                                                            levelChange
-                                                        }
-                                                        setLevel={setLevel}
-                                                    />
+                                                    <div className="grid gap-4 border-solid border-[1.34px] border-gray-300 rounded-md py-2 min-w-[300px]">
+                                                        <div className="px-2 font-semibold mb-3 flex justify-between relative after:absolute after:w-full after:h-[1.5px] after:bg-[rgb(236,236,237)] after:left-0 after:bottom-[-10px] after:rounded-full">
+                                                            Classrooms and
+                                                            Modules
+                                                        </div>
+                                                        <div className="px-2 text-sm flex gap-3 relative after:absolute after:w-full after:h-[0.1px] after:bg-[rgb(202,202,203)] after:left-0 after:bottom-[1.5px] after:rounded-full">
+                                                            <div className="flex gap-6 ">
+                                                                {links.map(
+                                                                    (
+                                                                        link,
+                                                                        ind
+                                                                    ) => (
+                                                                        <div
+                                                                            className="flex gap-1 "
+                                                                            key={
+                                                                                ind
+                                                                            }
+                                                                        >
+                                                                            <NavLink
+                                                                                className="pb-3 z-10 "
+                                                                                style={({
+                                                                                    isActive,
+                                                                                }) => ({
+                                                                                    color: isActive
+                                                                                        ? "#4d59e4"
+                                                                                        : " ",
+                                                                                    fontWeight:
+                                                                                        isActive
+                                                                                            ? "bold"
+                                                                                            : " ",
+                                                                                    borderBottom:
+                                                                                        isActive
+                                                                                            ? "2px solid #4d59e4"
+                                                                                            : " ",
+                                                                                })}
+                                                                                to={
+                                                                                    link.path
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    link.text
+                                                                                }
+                                                                            </NavLink>
+                                                                            {link.path ===
+                                                                                "/fields/create/modules" && (
+                                                                                <p className="text-[rgb(138,139,140)] relative w-fit ">
+                                                                                    (
+                                                                                    {
+                                                                                        l
+                                                                                            .modules
+                                                                                            .length
+                                                                                    }
+
+                                                                                    )
+                                                                                </p>
+                                                                            )}
+                                                                            {link.path ===
+                                                                                "/fields/create/classrooms" && (
+                                                                                <p className="text-[rgb(138,139,140)] relative w-fit ">
+                                                                                    (
+                                                                                    {
+                                                                                        l
+                                                                                            .classrooms
+                                                                                            .length
+                                                                                    }
+
+                                                                                    )
+                                                                                </p>
+                                                                            )}
+                                                                        </div>
+                                                                    )
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        <Outlet
+                                                            context={{
+                                                                l,
+                                                                levelChange,
+                                                                setLevel,
+                                                            }}
+                                                        />
+                                                    </div>
                                                 </div>
                                             ))
                                         ) : (

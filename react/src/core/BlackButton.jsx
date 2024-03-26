@@ -6,7 +6,7 @@ export default function BlackButton({ to = false, content = "" ,onClick}) {
         <>
             {to ? (
                 <Link
-                    className="text-white bg-slate-900 px-6 py-1 rounded-[5px] capitalize text-[0.8rem]"
+                    className="text-white bg-slate-900 px-3 py-1 rounded-[5px] capitalize text-[0.8rem]"
                     to={to}
                 >
                     <p>{content}</p>
@@ -14,7 +14,7 @@ export default function BlackButton({ to = false, content = "" ,onClick}) {
             ) : (
                 <button 
                 onClick={onClick}
-                className="text-white bg-slate-900 px-6 py-1  rounded-[5px] capitalize text-[0.8rem]">
+                className="text-white bg-slate-900 px-3 py-1  rounded-[5px] capitalize text-[0.8rem]">
                     <p>{content}</p>
                 </button>
             )}

@@ -1,19 +1,41 @@
 import { NavLink, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import {  useState } from "react";
+import { useContext, useState } from "react";
 import axiosClient from "../../../axios";
+import { ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
+import { SvgsContext } from "../../../contexts/SvgsProvider";
 
 export default function AdminLayout() {
+    const svgs = useContext(SvgsContext);
     const { userToken, currentUser, setCurrentUser, setUserToken } =
         useStateContext();
     const [isMenuOpen, setMenuOpen] = useState(false);
+    const [isSideBarOpen, setSideBarOpen] = useState(true);
     const location = useLocation();
+
     const sideBar = [
-        { name: "Dashboard", link: "/" },
-        { name: "Fields", link: "/admin/fields" },
-        { name: "Students", link: "/admin/students" },
-        { name: "Teachers", link: "/admin/teachers" },
-        { name: "Grades", link: "/admin/grades" },
+        {
+            name: "Dashboard",
+            link: "/",
+            icon: svgs.dashboard,
+        },
+        {
+            name: "Fields",
+            link: "/admin/fields",
+            icon: svgs.field,
+        },
+        {
+            name: "Students",
+            link: "/admin/students",
+            icon: svgs.student,
+        },
+        {
+            name: "Teachers",
+            link: "/admin/teachers",
+            icon: svgs.teacher,
+        },
+        { name: "Exams", link: "/admin/exams", icon: svgs.exam },
+        { name: "Grades", link: "/admin/grades", icon: svgs.grade },
     ];
     const currentNavItem = sideBar.find(
         (item) => item.link === location.pathname
@@ -33,26 +55,43 @@ export default function AdminLayout() {
     };
 
     return userToken && currentUser.role === 1 ? (
-        <div className="grid grid-flow-col ">
-            <aside className="bg-[rgb(248,248,248)] pl-7 pt-4 pr-4  h-full min-h-[100vh]">
-                <div className="text-2xl mb-12">Logo</div>
-                <nav>
+        <div className="flex ">
+            <aside
+                className={`bg-[rgb(248,248,248)] pt-4 max-w-fit px-4  h-full min-h-[100vh] relative ${
+                    isSideBarOpen ? "min-w-[200px]  pl-7 " : "w-[90px]  "
+                } `}
+            >
+                <div className="mb-12 w-4"></div>
+                <nav className="overflow-auto ">
                     {sideBar.map((item) => (
                         <NavLink
                             to={item.link}
                             key={item.name}
-                            className="block font-semibold mb-2 px-2 py-1 text-[rgb(138,139,140)]  rounded-md ) "
+                            className="flex items-center gap-4 font-semibold py-2  w-fit  text-[rgb(138,139,140)]  rounded-md "
+                              
                             style={({ isActive }) => ({
                                 backgroundColor: isActive ? "#fff" : "",
                                 color: isActive ? "black" : " ",
                             })}
                         >
-                            {item.name}
+                            <span> {item.icon}</span>
+                            {isSideBarOpen && <p> {item.name}</p>}
                         </NavLink>
                     ))}
                 </nav>
             </aside>
-            <main className="col-[2_/_span_10] pl-7 pr-7 overflow-auto">
+
+            <div className="relative">
+                <ChevronDoubleRightIcon
+                    onClick={() => {
+                        setSideBarOpen(!isSideBarOpen);
+                    }}
+                    className={`  fixed top-2/4  w-6 text-[rgb(138,139,140)] [transition:rotate_.4s,_height_4s] cursor-pointer ${
+                        isSideBarOpen ? "[rotate:180deg] " : " "
+                    }`}
+                />
+            </div>
+            <main className=" ml-10 pl-7 pr-7 overflow-auto w-full ">
                 <div className="flex justify-between pt-4 pb-10">
                     <div className="font-semibold text-2xl">{title}</div>
                     <div className="relative">
