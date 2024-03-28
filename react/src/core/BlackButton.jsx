@@ -6,16 +6,16 @@ export default function BlackButton({ to = false, content = "" ,onClick}) {
         <>
             {to ? (
                 <Link
-                    className="text-white bg-slate-900 px-3 py-1 rounded-[5px] capitalize text-[0.8rem]"
+                    className="text-white  bg-slate-900 px-3 py-1  rounded-[5px] capitalize text-[0.7rem]"
                     to={to}
                 >
-                    <p>{content}</p>
+                  {content}
                 </Link>
             ) : (
                 <button 
                 onClick={onClick}
-                className="text-white bg-slate-900 px-3 py-1  rounded-[5px] capitalize text-[0.8rem]">
-                    <p>{content}</p>
+                className="text-white  bg-slate-900 px-3 py-1  rounded-[5px] capitalize text-[0.7rem]">
+                    {content}
                 </button>
             )}
         </>

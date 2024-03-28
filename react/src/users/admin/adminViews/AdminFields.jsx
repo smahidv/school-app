@@ -31,12 +31,12 @@ export default function AdminFields() {
     return (
         <>
             <div className=" flex justify-start">
-                <BlackButton to="/fields/create" content="add field" />
+                <BlackButton to="/fields/create/classrooms" content="add course" />
             </div>
             {loading && <div className="text-lg mt-12">Loading...</div>}
             {!loading && (
                 <>
-                    <div className="grid gap-6 items-center mt-10 md:grid-cols-[repeat(auto-fill,_300px)]">
+                    <div className="grid gap-6 items-center my-10 md:grid-cols-[repeat(auto-fill,_300px)]">
                         {fields.length > 0 &&
                             fields.map((field) => (
                                 <div
@@ -49,7 +49,7 @@ export default function AdminFields() {
                                         </p>
                                         <div className="flex gap-3 items-start">
                                             <Link
-                                                to={`/fields/create/${field.id}`}
+                                                to={`/fields/create/${field.id}/classrooms`}
                                             >
                                                 <PencilIcon className="w-4 cursor-pointer" />
                                             </Link>

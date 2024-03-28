@@ -17,5 +17,10 @@ class Field extends Model
 {
     return $this->hasManyThrough(Module::class, Level::class);
 }
+
+public function classrooms()
+{
+    return $this->hasManyThrough(ClassRoom::class, Level::class);
+}
     
 }

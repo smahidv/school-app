@@ -17,4 +17,8 @@ class Level extends Model
     {
         return $this->hasMany(Module::class, 'level_id');
     }
+    public function classrooms()
+    {
+        return $this->hasMany(ClassRoom::class, 'level_id');
+    }
 }

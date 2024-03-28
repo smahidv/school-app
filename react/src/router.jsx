@@ -16,6 +16,7 @@ import ClassRoomEditor from "./users/admin/adminComponents/ClassRoomEditor";
 import ModulesEditor from "./users/admin/adminComponents/ModulesEditor";
 import AdminExams from "./users/admin/adminViews/AdminExams";
 
+
 const router = createBrowserRouter([
     {
         path: "/auth",

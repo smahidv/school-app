@@ -20,7 +20,7 @@ export default function AdminLayout() {
             icon: svgs.dashboard,
         },
         {
-            name: "Fields",
+            name: "Courses",
             link: "/admin/fields",
             icon: svgs.field,
         },
@@ -55,20 +55,25 @@ export default function AdminLayout() {
     };
 
     return userToken && currentUser.role === 1 ? (
-        <div className="flex ">
+        <div className="flex h-full  ">
             <aside
-                className={`bg-[rgb(248,248,248)] pt-4 max-w-fit px-4  h-full min-h-[100vh] relative ${
+                className={`bg-[rgb(248,248,248)] pt-4 max-w-fit px-4  min-h-full relative ${
                     isSideBarOpen ? "min-w-[200px]  pl-7 " : "w-[90px]  "
                 } `}
             >
-                <div className="mb-12 w-4"></div>
-                <nav className="overflow-auto ">
+                {/* {logo} */}
+                <div className="mb-[90px] w-4"></div>
+                {/* {logo} */}
+                <nav
+                    className={`overflow-auto grid  ${
+                        isSideBarOpen ? "gap-8 " : "gap-12"
+                    }`}
+                >
                     {sideBar.map((item) => (
                         <NavLink
                             to={item.link}
                             key={item.name}
-                            className="flex items-center gap-4 font-semibold py-2  w-fit  text-[rgb(138,139,140)]  rounded-md "
-                              
+                            className="flex items-center gap-4 font-semibold px-1    text-[rgb(138,139,140)]  rounded-md "
                             style={({ isActive }) => ({
                                 backgroundColor: isActive ? "#fff" : "",
                                 color: isActive ? "black" : " ",
@@ -86,7 +91,7 @@ export default function AdminLayout() {
                     onClick={() => {
                         setSideBarOpen(!isSideBarOpen);
                     }}
-                    className={`  fixed top-2/4  w-6 text-[rgb(138,139,140)] [transition:rotate_.4s,_height_4s] cursor-pointer ${
+                    className={`  fixed top-2/4  w-7 text-[rgb(138,139,140)] [transition:rotate_.4s,_height_4s] cursor-pointer ${
                         isSideBarOpen ? "[rotate:180deg] " : " "
                     }`}
                 />
@@ -96,14 +101,14 @@ export default function AdminLayout() {
                     <div className="font-semibold text-2xl">{title}</div>
                     <div className="relative">
                         <img
-                            className="w-[30px] h-[30px] rounded-[100%] cursor-pointer "
+                            className="w-[40px] h-[40px] rounded-[100%] cursor-pointer border-[3px] border-[dotted] border-[rgb(238,237,237)] p-[2px] bg-clip-padding"
                             src={`http://localhost:8000/${currentUser.image}`}
                             alt="admin profile"
                             onClick={toggleMenu}
                         />
 
                         {isMenuOpen && (
-                            <div className="block max-w-[200px] w-[120px] text-center bg-[rgb(248,248,248)] py-1 px-8  rounded-sm top-9 shadow-md right-0 absolute">
+                            <div className="block max-w-[200px] w-[120px] text-center bg-[rgb(248,248,248)] py-1 px-8  rounded-sm top-[43px] shadow-md right-0 absolute">
                                 <NavLink
                                     href="#"
                                     onClick={(ev) => logout(ev)}

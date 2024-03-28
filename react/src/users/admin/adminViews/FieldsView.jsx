@@ -86,31 +86,30 @@ export default function FieldsView() {
         }
     }, []);
     const links = [
-        { path: "/fields/create/classrooms", text: "classrooms" },
-        { path: "/fields/create/modules", text: "modules" },
+       {create:"/fields/create/classrooms",update:`/fields/create/${id}/classrooms`, text: "classrooms" },
+     {create:"/fields/create/modules",update:`/fields/create/${id}/modules`, text: "modules" }
     ];
 
     return (
         <>
             {/* <pre>{JSON.stringify(fields, undefined, 2)}</pre> */}
-
             {loading && <div className="text-center text-lg">Loading...</div>}
             {!loading && (
                 <form action="#" method="post" onSubmit={onSubmit}>
                     <div className="shadow-xl mb-20 pb-6  relative after:absolute after:w-full after:h-[0.1px] after:bg-[rgb(202,202,203)] after:left-0 after:top-9 after:rounded-full">
                         <div className="px-8 ">
                             <div className="  mb-8 font-bold ">
-                                {!id ? "Create new Field" : "Update field"}
+                                {!id ? "Create new Course" : "Update Course"}
                             </div>
                             <div className="grid gap-8">
                                 {/* /////////////////////////////fields////////////////////////////// */}
                                 <div>
                                     <div className="font-semibold mb-3 text-lg">
-                                        Field
+                                     Course
                                     </div>
-                                    <div className="flex gap-6">
+                                    <div className="flex gap-2 items-center">
                                         <input
-                                            className="bg-[rgb(247,247,247)] px-3 py-2 md:w-full  max-w-[420px] outline-none border-solid border-[1.34px] border-gray-300 rounded-md text-[0.85rem]"
+                                            className="bg-[rgb(247,247,247)] px-3 py-1 md:w-full  max-w-[350px] outline-none border-solid border-[1.34px] border-gray-300 rounded-md text-[0.85rem]"
                                             type="text"
                                             placeholder="field name"
                                             value={fields.name}
@@ -138,6 +137,7 @@ export default function FieldsView() {
                                         <BlackButton
                                             content="+ add levels"
                                             onClick={addLevel}
+                                          
                                         />
                                     </div>
                                 </div>
@@ -158,15 +158,20 @@ export default function FieldsView() {
                                                         </div>
                                                         <BlackButton
                                                             content="+ add level"
-                                                            onClick={(e) => addLevel(e, index+1)}
+                                                            onClick={(e) =>
+                                                                addLevel(
+                                                                    e,
+                                                                    index + 1
+                                                                )
+                                                            }
                                                         />
                                                     </div>
                                                     <div className="flex gap-3 items-center">
                                                         <p>{index + 1}.</p>
                                                         <input
-                                                            className="bg-[rgb(247,247,247)] px-3 py-2 w-[200px]    outline-none border-solid border-[1.34px] border-gray-300 rounded-md text-[0.85rem]"
+                                                            className="bg-[rgb(247,247,247)] px-3 py-1 w-[200px]    outline-none border-solid border-[1.34px] border-gray-300 rounded-md text-[0.85rem]"
                                                             type="text"
-                                                            placeholder="level"
+                                                            placeholder="ex : 1st year"
                                                             value={l.name}
                                                             onInput={(ev) => {
                                                                 l.name =
@@ -218,34 +223,28 @@ export default function FieldsView() {
                                                                                             : " ",
                                                                                 })}
                                                                                 to={
-                                                                                    link.path
+                                                                                  id ?  link.update : link.create
                                                                                 }
                                                                             >
                                                                                 {
                                                                                     link.text
                                                                                 }
                                                                             </NavLink>
-                                                                            {link.path ===
-                                                                                "/fields/create/modules" && (
+                                                                            {link.create === "/fields/create/modules"  && (
                                                                                 <p className="text-[rgb(138,139,140)] relative w-fit ">
                                                                                     (
                                                                                     {
-                                                                                        l
-                                                                                            .modules
-                                                                                            .length
+                                                                                        l.modules.length
                                                                                     }
 
                                                                                     )
                                                                                 </p>
                                                                             )}
-                                                                            {link.path ===
-                                                                                "/fields/create/classrooms" && (
+                                                                            {link.create === "/fields/create/classrooms"  && (
                                                                                 <p className="text-[rgb(138,139,140)] relative w-fit ">
                                                                                     (
                                                                                     {
-                                                                                        l
-                                                                                            .classrooms
-                                                                                            .length
+                                                                                        l.classrooms.length
                                                                                     }
 
                                                                                     )

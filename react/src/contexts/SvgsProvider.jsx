@@ -45,7 +45,7 @@ export default function SvgsProvider({ children }) {
             <svg
                 id="Layer_1"
                 className="w-4 fill-current"
-                enable-Background="new 0 0 224.283 229.183"
+                enableBackground="new 0 0 224.283 229.183"
                 viewBox="0 0 224.283 229.183"
                 width="512"
                 xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +70,7 @@ export default function SvgsProvider({ children }) {
             <svg
                 className="w-4 fill-current"
                 id="Layer_1"
-                enable-Background="new 0 0 512 512"
+                enableBackground="new 0 0 512 512"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
             >

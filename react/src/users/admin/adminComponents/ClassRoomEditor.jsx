@@ -11,7 +11,7 @@ export default function ClassRoomEditor() {
         e.stopPropagation();
         index = index !== undefined ? index : l.classrooms.length;
         l.classrooms.splice(index, 0, {
-            uuid: uuidv4(),
+            id: uuidv4(),
             name: "",
         });
 
@@ -19,13 +19,13 @@ export default function ClassRoomEditor() {
     }
     
     function deleteClassroom(classroom) {
-      
-        l.classrooms = l.classrooms.filter((c) => c.uuid != classroom.uuid);
+        l.classrooms = l.classrooms.filter((c) => c.id != classroom.id);
         setLevel({ ...l });
     }
     useEffect(() => {
         levelChange(l);
     }, [l]);
+
     return (
         <div>
             <div className="grid gap-4 mb-10">
@@ -39,7 +39,7 @@ export default function ClassRoomEditor() {
                             <input
                                 className="bg-[rgb(247,247,247)] px-3 py-2 md:w-full  max-w-[420px]    outline-none border-solid border-[1.34px] border-gray-300 rounded-md text-[0.85rem]"
                                 type="text"
-                                placeholder="Classroom name"
+                                placeholder="ex : group 6"
                                 value={c.name}
                                 onInput={(ev) => {
                                     c.name = ev.target.value;
@@ -48,6 +48,7 @@ export default function ClassRoomEditor() {
                             />
                             <BlackButton
                                 content="+ add "
+                             
                                 onClick={(e) => addClassrooms(e, index+1)}
                             />
 
