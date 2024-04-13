@@ -57,25 +57,29 @@ export default function AdminLayout() {
     return userToken && currentUser.role === 1 ? (
         <div className="flex h-full  ">
             <aside
-                className={`bg-[rgb(248,248,248)] pt-4 max-w-fit px-4  min-h-full relative ${
-                    isSideBarOpen ? "min-w-[200px]  pl-7 " : "w-[90px]  "
+                className={`shadow-xl pt-4 max-w-fit  min-h-full relative ${
+                    isSideBarOpen ? "min-w-[200px]  " : "w-[90px]  "
                 } `}
             >
                 {/* {logo} */}
                 <div className="mb-[90px] w-4"></div>
                 {/* {logo} */}
                 <nav
-                    className={`overflow-auto grid  ${
-                        isSideBarOpen ? "gap-8 " : "gap-12"
+                    className={`overflow-auto grid   ${
+                        isSideBarOpen ? " " : "gap-8"
                     }`}
                 >
                     {sideBar.map((item) => (
                         <NavLink
                             to={item.link}
                             key={item.name}
-                            className="flex items-center gap-4 font-semibold px-1    text-[rgb(138,139,140)]  rounded-md "
+                            className={`flex items-center gap-4 font-semibold py-3      text-[rgb(138,139,140)]  rounded-r-lg  ${
+                                isSideBarOpen ? " pl-5  " : "px-3"
+                            } `}
                             style={({ isActive }) => ({
-                                backgroundColor: isActive ? "#fff" : "",
+                                backgroundColor: isActive
+                                    ? "rgb(241,241,241)"
+                                    : "",
                                 color: isActive ? "black" : " ",
                             })}
                         >
@@ -91,12 +95,12 @@ export default function AdminLayout() {
                     onClick={() => {
                         setSideBarOpen(!isSideBarOpen);
                     }}
-                    className={`  fixed top-2/4  w-7 text-[rgb(138,139,140)] [transition:rotate_.4s,_height_4s] cursor-pointer ${
+                    className={`  fixed top-2/4  w-7 text-[rgb(138,139,140)] hover:text-gray-800 [transition:rotate_.4s,_height_4s] cursor-pointer ${
                         isSideBarOpen ? "[rotate:180deg] " : " "
                     }`}
                 />
             </div>
-            <main className=" ml-10 pl-7 pr-7 overflow-auto w-full ">
+            <main className=" pl-7 pr-7  overflow-auto w-full ">
                 <div className="flex justify-between pt-4 pb-10">
                     <div className="font-semibold text-2xl">{title}</div>
                     <div className="relative">

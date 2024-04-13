@@ -60,20 +60,18 @@ export default function FieldsView() {
         }
 
         res.then((res) => {
-            console.log(res);
             navigate("/admin/fields");
             // if (id) {
             //   showToast("The survey was updated");
             // } else {
             //   showToast("The survey was created");
             // }
+        }).catch((err) => {
+            if (err && err.response) {
+                setError(err.response.data.message);
+            }
+            console.log(err, err.response);
         });
-        // .catch((err) => {
-        //     if (err && err.response) {
-        //         setError(err.response.data.message);
-        //     }
-        //     console.log(err, err.response);
-        // });
     };
 
     useEffect(() => {
@@ -86,8 +84,16 @@ export default function FieldsView() {
         }
     }, []);
     const links = [
-       {create:"/fields/create/classrooms",update:`/fields/create/${id}/classrooms`, text: "classrooms" },
-     {create:"/fields/create/modules",update:`/fields/create/${id}/modules`, text: "modules" }
+        {
+            create: "/fields/create/classrooms",
+            update: `/fields/create/${id}/classrooms`,
+            text: "classrooms",
+        },
+        {
+            create: "/fields/create/modules",
+            update: `/fields/create/${id}/modules`,
+            text: "subjects",
+        },
     ];
 
     return (
@@ -96,6 +102,11 @@ export default function FieldsView() {
             {loading && <div className="text-center text-lg">Loading...</div>}
             {!loading && (
                 <form action="#" method="post" onSubmit={onSubmit}>
+                    {error && (
+                        <div className="bg-red-500 rounded py-1 px-3 my-2 text-white">
+                            {error}
+                        </div>
+                    )}
                     <div className="shadow-xl mb-20 pb-6  relative after:absolute after:w-full after:h-[0.1px] after:bg-[rgb(202,202,203)] after:left-0 after:top-9 after:rounded-full">
                         <div className="px-8 ">
                             <div className="  mb-8 font-bold ">
@@ -105,7 +116,7 @@ export default function FieldsView() {
                                 {/* /////////////////////////////fields////////////////////////////// */}
                                 <div>
                                     <div className="font-semibold mb-3 text-lg">
-                                     Course
+                                        Course
                                     </div>
                                     <div className="flex gap-2 items-center">
                                         <input
@@ -137,7 +148,6 @@ export default function FieldsView() {
                                         <BlackButton
                                             content="+ add levels"
                                             onClick={addLevel}
-                                          
                                         />
                                     </div>
                                 </div>
@@ -223,28 +233,36 @@ export default function FieldsView() {
                                                                                             : " ",
                                                                                 })}
                                                                                 to={
-                                                                                  id ?  link.update : link.create
+                                                                                    id
+                                                                                        ? link.update
+                                                                                        : link.create
                                                                                 }
                                                                             >
                                                                                 {
                                                                                     link.text
                                                                                 }
                                                                             </NavLink>
-                                                                            {link.create === "/fields/create/modules"  && (
+                                                                            {link.create ===
+                                                                                "/fields/create/modules" && (
                                                                                 <p className="text-[rgb(138,139,140)] relative w-fit ">
                                                                                     (
                                                                                     {
-                                                                                        l.modules.length
+                                                                                        l
+                                                                                            .modules
+                                                                                            .length
                                                                                     }
 
                                                                                     )
                                                                                 </p>
                                                                             )}
-                                                                            {link.create === "/fields/create/classrooms"  && (
+                                                                            {link.create ===
+                                                                                "/fields/create/classrooms" && (
                                                                                 <p className="text-[rgb(138,139,140)] relative w-fit ">
                                                                                     (
                                                                                     {
-                                                                                        l.classrooms.length
+                                                                                        l
+                                                                                            .classrooms
+                                                                                            .length
                                                                                     }
 
                                                                                     )

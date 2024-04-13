@@ -11,7 +11,6 @@ use App\Models\Level;
 use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class FieldController extends Controller
@@ -97,7 +96,7 @@ class FieldController extends Controller
     public function update(UpdateFieldRequest $request, Field $field)
     {
         $data = $request->validated();
-
+        $field->update($data);
         $existingIds = $field->levels()->pluck('id')->toArray();
         $newIds = Arr::pluck($data['levels'], 'id');
         $toDelete = array_diff($existingIds, $newIds);
@@ -121,6 +120,8 @@ class FieldController extends Controller
                  $this->updateLevel($level, $levelMap[$level->id]);
              }
          }
+       
+     
 
 
 
@@ -158,9 +159,8 @@ class FieldController extends Controller
             'name' => 'required|string',
             'field_id' => 'exists:App\Models\Field,id',
             'modules' => 'present|array', 
-            'modules.*.name.required' => 'required|string',
+            'modules.*.name' => 'required|unique:modules,name', 
             'classrooms' => 'present|array', 
-            'classrooms.*.name' => 'required|string',
         ]);
     
         // If validation fails, throw an exception with validation errors
@@ -173,9 +173,20 @@ class FieldController extends Controller
             'name' => $levelData['name'],
             'field_id' => $levelData['field_id'],
         ]);
-    
+
+
+     
         // Create modules for the level using the provided data
         foreach ($levelData['modules'] as $moduleData) {
+
+            // $validatorModule= Validator::make($moduleData, [
+            //     'name' => 'required|string',
+    
+            // ]);
+
+            // if ($validatorModule->fails()) {
+            //     throw new \InvalidArgumentException($validatorModule->errors()->first());
+            // }
             Module::create([
                 'name' => $moduleData['name'],
                 'level_id' => $level->id, // Assign the level ID to the module
@@ -184,6 +195,15 @@ class FieldController extends Controller
     
         // Create classrooms for the level using the provided data
         foreach ($levelData['classrooms'] as $classroomData) {
+
+            // $validatorClassroom= Validator::make($classroomData, [
+            //     'name' => 'required|string',
+    
+            // ]);
+            // if ($validatorClassroom->fails()) {
+            //     throw new \InvalidArgumentException($validatorClassroom->errors()->first());
+            // }
+
             Classroom::create([
                 'name' => $classroomData['name'],
                 'level_id' => $level->id, // Assign the level ID to the classroom
@@ -203,9 +223,9 @@ private function updateLevel(Level $level, $levelData)
         'name' => 'required|string',
         'field_id' => 'exists:App\Models\Field,id',
         'modules' => 'array', 
-        'modules.*.name' => 'required|string',
+        'modules.*.name' => 'required|unique:modules,name', 
+        
         'classrooms' => 'array', 
-        'classrooms.*.name' => 'required|string',
     ]);
 
     // If validation fails, throw an exception with validation errors
@@ -222,6 +242,13 @@ private function updateLevel(Level $level, $levelData)
     // Update or delete existing modules for the level
     if (isset($levelData['modules'])) {
         foreach ($level->modules as $module) {
+        //    $validatorModule= Validator::make($module, [
+        //         'name' => 'required|string',
+    
+        //     ]);
+        //     if ($validatorModule->fails()) {
+        //         throw new \InvalidArgumentException($validatorModule->errors()->first());
+        //     }
             // Check if the module exists in the update data
             $moduleData = collect($levelData['modules'])->where('id', $module->id)->first();
             if ($moduleData) {
@@ -237,6 +264,15 @@ private function updateLevel(Level $level, $levelData)
     // Update or delete existing classrooms for the level
     if (isset($levelData['classrooms'])) {
         foreach ($level->classrooms as $classroom) {
+
+            // $validatorClassroom= Validator::make($classroom, [
+            //     'name' => 'required|string',
+    
+            // ]);
+            // if ($validatorClassroom->fails()) {
+            //     throw new \InvalidArgumentException($validatorClassroom->errors()->first());
+            // }
+
             // Check if the classroom exists in the update data
             $classroomData = collect($levelData['classrooms'])->where('id', $classroom->id)->first();
             if ($classroomData) {
@@ -250,6 +286,14 @@ private function updateLevel(Level $level, $levelData)
     }
 
     return $level;
+}
+
+
+public function getClasses(Request $request)
+{
+    return response()->json(
+        ClassRoom::select("name")->get()
+    );
 }
 
 

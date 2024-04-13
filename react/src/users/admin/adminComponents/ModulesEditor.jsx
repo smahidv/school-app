@@ -19,12 +19,12 @@ export default function ModulesEditor() {
         setLevel({ ...l });
     }
     function deleteModule(module) {
-        // if (l.modules.length === 1) {
+        if (l.modules.length === 1) {
 
-        //     return;
-        // }
+            return;
+        }
 
-        debugger;
+   
         l.modules = l.modules.filter((m) => m.id !== module.id);
         setLevel({ ...l });
     }

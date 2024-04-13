@@ -1,8 +1,7 @@
-import React from 'react'
+import { useStateContext } from '../../../contexts/ContextProvider' ;
 
 export default function AdminDashboard() {
-  return (
-    <div>AdminDashboard</div>
-  )
+  const {currentUser } = useStateContext();
+ 
+    return <div className='capitalize '>Welcome, {currentUser['first name']} </div>;
 }
-

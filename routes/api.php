@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FieldController;
+use App\Http\Controllers\studentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,14 +23,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
-   
+
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-  
+
     Route::middleware('admin')->group(function () {
         Route::apiResource('field', FieldController::class);
-    Route::post('/logout', [AuthController::class, 'logout']);
+        Route::apiResource('student', studentController::class);
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/classes', [FieldController::class, 'getClasses']);
+
+    
 
     });
 });

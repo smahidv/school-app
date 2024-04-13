@@ -39,7 +39,7 @@ export default function ClassRoomEditor() {
                             <input
                                 className="bg-[rgb(247,247,247)] px-3 py-2 md:w-full  max-w-[420px]    outline-none border-solid border-[1.34px] border-gray-300 rounded-md text-[0.85rem]"
                                 type="text"
-                                placeholder="ex : group 6"
+                                placeholder="ex : 5IIR G6"
                                 value={c.name}
                                 onInput={(ev) => {
                                     c.name = ev.target.value;
