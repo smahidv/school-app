@@ -18,7 +18,7 @@ export default function AdminStudents() {
         axiosClient.get(url).then(({ data }) => {
             setStudents(data.data);
             setMeta(data.meta);
-        console.log(meta);
+      
         });
     };
     const onDeleteClick = (id) => {
@@ -31,6 +31,7 @@ export default function AdminStudents() {
 
     const changeSideInfo = (student) => {
         setSelectedStudent(student); 
+        console.log(student);
    
     }
 
@@ -205,7 +206,7 @@ export default function AdminStudents() {
                         </div>
                     </div>
 
-                    <StudentSideInfo student={selectedStudent}  />
+                    <StudentSideInfo student={ selectedStudent }  />
                 </div>
             )}
         </>

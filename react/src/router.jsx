@@ -15,6 +15,9 @@ import FieldsView from "./users/admin/adminViews/FieldsView";
 import ClassRoomEditor from "./users/admin/adminComponents/ClassRoomEditor";
 import ModulesEditor from "./users/admin/adminComponents/ModulesEditor";
 import AdminExams from "./users/admin/adminViews/AdminExams";
+import TeacherClass from "./users/teacher/teacherviews/TeacherClass";
+import TeacherExams from "./users/teacher/teacherviews/TeacherExams";
+import TeacherPeaple from "./users/teacher/teacherviews/TeacherPeaple";
 
 
 const router = createBrowserRouter([
@@ -81,13 +84,29 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: "/",
+        path: "/teacher",
         element: <TeacherLayout />,
         children: [
             {
-                path: "/teacher/dashboard",
+                path: "/teacher",
                 element: <TeacherDashboard />,
             },
+            {
+                path: "/teacher/c",
+                element: <TeacherClass />,
+                children:[
+                    {
+                        path: "/teacher/c/w",
+                        element: <TeacherExams />,
+                    },
+                    {
+                        path: "/teacher/c/p",
+                        element: <TeacherPeaple />,
+                    },
+                ]
+            },
+            
+            
         ],
     },
     {

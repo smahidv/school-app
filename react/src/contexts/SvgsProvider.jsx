@@ -3,6 +3,7 @@ import React, { createContext } from "react";
 export const SvgsContext = createContext(null);
 
 export default function SvgsProvider({ children }) {
+
     const svgs = {
         dashboard: (
             <svg
@@ -91,5 +92,14 @@ export default function SvgsProvider({ children }) {
         ),
     };
 
-    return <SvgsContext.Provider value={svgs}>{children}</SvgsContext.Provider>;
+    return (
+        <SvgsContext.Provider
+            value={
+            
+                svgs
+            }
+        >
+            {children}
+        </SvgsContext.Provider>
+    );
 }

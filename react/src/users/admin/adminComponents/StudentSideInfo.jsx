@@ -14,7 +14,7 @@ export default function StudentSideInfo({student} ) {
                     alt=""
                 />
                 <div className="capitalize leading-[1em]">
-                <p>{student["first name"]} {student["last name"]}</p>
+                <p>{student['first name']} {student['last name']}</p>
                     <small>
                     {student.email}
                        </small>

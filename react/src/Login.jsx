@@ -34,7 +34,7 @@ export default function Login() {
                 if (data.user.role === 1) {
                     navigate("/");
                 } else if (data.user.role === 2) {
-                    navigate("/teacher/dashboard");
+                    navigate("/teacher");
                 } else if (data.user.role === 3) {
                     navigate("/student/dashboard");
                 }
