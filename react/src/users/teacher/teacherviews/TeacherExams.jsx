@@ -10,7 +10,7 @@ export default function TeacherExams() {
     return (
         <div>
             {openEditor && <ExamView toggleEditor={toggleEditor} />}
-            <div className={`p-5 ${openEditor && "pointer-events-none"}`}>
+            <div className={` p-5 ${openEditor && "pointer-events-none"}`}>
                 <BlackButton onClick={toggleEditor} content="Create New" />
             </div>
         </div>

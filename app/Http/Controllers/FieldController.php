@@ -296,5 +296,11 @@ public function getClasses(Request $request)
     );
 }
 
+public function getModules(Request $request)
+{
+    return response()->json(
+        Module::select("id","name")->get()
+    );
+}
 
 }

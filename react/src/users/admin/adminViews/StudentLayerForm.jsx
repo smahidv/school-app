@@ -76,7 +76,7 @@ export default function StudentLayerForm({ toggleLayer }) {
                                 type="text"
                                 placeholder="student's first name"
                                 onChange={handleInput}
-                                value={students.fname}
+                                value={students.fname} 
                             />
                         </div>
                         <div className="grid">

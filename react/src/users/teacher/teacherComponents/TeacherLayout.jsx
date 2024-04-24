@@ -10,9 +10,11 @@ export default function TeacherLayout() {
                 <div className="flex items-center justify-between">
                     <p>Classes</p>
                     <div>
-                        <img 
-                        className="w-9 h-9 rounded-full"
-                        src="https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg" alt="" />
+                        <img
+                            className="w-9 h-9 rounded-full"
+                            src="https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
+                            alt=""
+                        />
                     </div>
                 </div>
             </div>

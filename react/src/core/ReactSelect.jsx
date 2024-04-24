@@ -2,27 +2,26 @@ import Select from "react-select";
 import axiosClient from "../../src/axios";
 import { useState, useEffect } from "react";
 
-export default function ReactSelect({ name, onChange, value }) {
-    const [classes, setClasses] = useState([]);
+export default function ReactSelect({ onChange, isMulti, endpoint }) {
+    const [options, setOptions] = useState([]);
 
     useEffect(() => {
-        axiosClient.get(`/classes`).then(({ data }) => {
-            setClasses(data);
+        axiosClient.get(endpoint).then(({ data }) => {
+            setOptions(data.map(item => ({ value: item.name, label: item.name,id:item.id })));
         });
-    }, []);
+    }, [endpoint]);
 
-    let options = classes.map((classItem) => ({
-        value: classItem.name,
-        label: classItem.name
-    }));
+    
 
     return (
         <Select
-            name={name}
-            onChange={onChange}  
-            value={options.find(option => option.value === value)}
-            menuPlacement="top"
-            options={options}
+            onChange={onChange}// the selected option(s) as its argument(s)
+            menuPlacement="auto"
+            options={options} //the entire list of options
+            isMulti={isMulti}
+       
+       
+
         />
     );
 }

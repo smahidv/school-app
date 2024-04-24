@@ -5,6 +5,15 @@
 @layer base {
     * {
       @apply m-0 p-0 box-border ;
-    }
+    };
+    body{
+      @apply min-h-[100vh] leading-6 overflow-x-hidden
+    };
+    img{
+      @apply max-w-full object-cover  block ;
+    };
+    p {
+    @apply m-0 break-words
+  };
 
   }

@@ -23,16 +23,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
+  
 
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/classes', [FieldController::class, 'getClasses']);
+    Route::get('/modules', [FieldController::class, 'getModules']);
+    
 
     Route::middleware('admin')->group(function () {
         Route::apiResource('field', FieldController::class);
         Route::apiResource('student', studentController::class);
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::get('/classes', [FieldController::class, 'getClasses']);
+      
 
     
 
