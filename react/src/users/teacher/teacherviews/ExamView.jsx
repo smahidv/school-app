@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     ArrowLongLeftIcon,
     ArrowLongRightIcon,
@@ -49,16 +49,23 @@ export default function ExamView({ toggleEditor }) {
 
     const [exam, setExam] = useState(
         {
-          module:"",
+         module_id:null,
           semester:"Semester 1",
-          enableDate:"",
-          disableDate:"",
+          enable_date:"",
+          expire_date:"",
           classes:[],
           description:"",
-          questions:[questions]
+          questions:questions
  
          }
      );
+     useEffect(() => {
+       
+        setExam((prevExam) => ({
+            ...prevExam,
+            questions: questions
+        }));
+    }, [questions]);
 
 
 

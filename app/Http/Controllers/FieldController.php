@@ -292,7 +292,7 @@ private function updateLevel(Level $level, $levelData)
 public function getClasses(Request $request)
 {
     return response()->json(
-        ClassRoom::select("name")->get()
+        ClassRoom::select("id","name")->get()
     );
 }
 

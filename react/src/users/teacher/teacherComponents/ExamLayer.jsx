@@ -9,13 +9,14 @@ export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
     };
 
     const handleClassSelect = (selectedOptions) => {
-        const selectedValues = selectedOptions.map((option) => option.value);
+        const selectedValues = selectedOptions.map((option) => option.id);
         setExam({ ...exam, classes: selectedValues });
     };
 
     const handleModuleSelect = (selectedOption) => {
-        setExam({ ...exam, module: selectedOption.id });
-        // console.log(selectedOption); exemple {value: 'anglais', label: 'anglais', id: 9}
+        setExam({ ...exam, module_id: selectedOption.id });
+        console.log(selectedOption);
+        //  exemple {value: 'anglais', label: 'anglais', id: 9}
     };
 
     const dateTimeLocalKnow = new Date(
@@ -48,7 +49,7 @@ export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
                         <div className="grid sm:grid-cols-[1fr_1fr] gap-x-20 gap-y-5">
                             <div>
                                 <label className="text-sm  text-[#282828]">
-                                    Module Name
+                                    Subject Name
                                 </label>
                                 <ReactSelect
                                     onChange={handleModuleSelect}
@@ -78,37 +79,37 @@ export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
                             </div>
                             <div>
                                 <label
-                                    htmlFor="enableDate"
+                                    htmlFor="enable_date"
                                     className="text-sm text-[#282828]"
                                 >
                                     Exam start date
                                 </label>
                                 <input
-                                    id="enableDate"
+                                    id="enable_date"
                                     onChange={(e) =>
-                                        handleInputChange(e, "enableDate")
+                                        handleInputChange(e, "enable_date")
                                     }
                                     className="mt-1 block outline-none p-[.3em] bg-[rgb(247,246,251)]"
                                     type="datetime-local"
-                                    value={exam.enableDate}
+                                    value={exam.enable_date}
                                     min={dateTimeLocalKnow}
                                 />
                             </div>
                             <div>
                                 <label
-                                    htmlFor="disableDate"
+                                    htmlFor="expire_date"
                                     className="text-sm text-[#282828]"
                                 >
                                     Exam expire date
                                 </label>
                                 <input
-                                    id="disableDate"
+                                    id="expire_date"
                                     onChange={(e) =>
-                                        handleInputChange(e, "disableDate")
+                                        handleInputChange(e, "expire_date")
                                     }
                                     className="mt-1 block outline-none p-[.3em] bg-[rgb(247,246,251)]"
                                     type="datetime-local"
-                                    value={exam.disableDate}
+                                    value={exam.expire_date}
                                     min={dateTimeLocalKnow}
                                 />
                             </div>

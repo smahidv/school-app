@@ -8,19 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Field extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'acronym', 'user_id',  'created_at', 'updated_at'];
+    protected $fillable = ['name', 'acronym', 'user_id', 'created_at', 'updated_at'];
 
-    public function levels(){
+    public function levels()
+    {
         return $this->hasMany(Level::class);
     }
-   public function modules()
-{
-    return $this->hasManyThrough(Module::class, Level::class);
-}
+    public function modules()
+    {
+        return $this->hasManyThrough(Module::class, Level::class);
+    }
 
-public function classrooms()
-{
-    return $this->hasManyThrough(ClassRoom::class, Level::class);
-}
-    
+    public function classrooms()
+    {
+        return $this->hasManyThrough(ClassRoom::class, Level::class);
+    }
+
 }

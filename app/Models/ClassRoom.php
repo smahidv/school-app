@@ -13,4 +13,9 @@ class ClassRoom extends Model
     {
         return $this->belongsTo(Level::class, 'level_id');
     }
+
+    public function exams()
+{
+    return $this->belongsToMany(Exam::class,'exams_class_rooms','exam_id','class_room_id');
+}
 }
