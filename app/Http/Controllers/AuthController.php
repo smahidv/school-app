@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         /**  @var User $user */
-        $user = User::query()->where('email', $request->get('email'))->first();
+        $user = User::query()->where('matricule', $request->get('matricule'))->first();
         if (empty($user)) {
             return response()->json([
                 'message' => 'The user does not exist'

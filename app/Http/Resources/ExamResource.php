@@ -18,7 +18,6 @@ class ExamResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
-            'description' => $this->description,
             'duration' => $this->duration,
             'module_id' => $this->module_id,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),

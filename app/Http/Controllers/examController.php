@@ -116,21 +116,30 @@ class examController extends Controller
                     'description' => 'nullable|string',
                     'data' => 'present',
                     'exam_id' => 'exists:App\Models\Exam,id',
-                    'image'=>'nullable'
+                    'image' => 'nullable|array',
                 ]);
                 $validatedData = $validator->validate();
                 $validatedData['exam_id'] = $examId;
-                // if (isset($data['image'])) {
-                //             $relativePath = $this->saveImage($data['image']);
-                //             $data['image'] = $relativePath;
-                //         }
+                if (isset($data['image'])) {
+                    // Ensure $data['image'] is an array
+                    if (!is_array($data['image'])) {
+                        throw new \Exception('Image data must be an array');
+                    }
+                    // Save multiple images
+                    $imagePaths = $this->saveImage($data['image']);
+                    // Serialize the array of image paths into a JSON string
+                    $validatedData['image'] = json_encode($imagePaths);
+                }
 
         return ExamQuestions::create($validatedData);
     }
    
 
-    private function saveImage($image)
-    {
+    private function saveImage($images)
+{
+    $relativePaths = [];
+
+    foreach ($images as $image) {
         // Check if image is valid base64 string
         if (preg_match('/^data:image\/(\w+);base64,/', $image, $type)) {
             // Take out the base64 encoded text without mime type
@@ -161,8 +170,12 @@ class examController extends Controller
         }
         file_put_contents($relativePath, $image);
 
-        return $relativePath;
+        $relativePaths[] = $relativePath;
     }
+
+    return $relativePaths;
+}
+
 
     private function examStatus(Carbon $expireDate)
     {

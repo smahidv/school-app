@@ -6,7 +6,7 @@ import {
 import QuestionAside from "../teacherComponents/QuestionAside";
 import QuestionEditor from "../teacherComponents/QuestionEditor";
 import ExamLayer from "../teacherComponents/ExamLayer";
-import { v4 as uuidv4 } from "uuid";
+
 
 export default function ExamView({ toggleEditor }) {
    
@@ -27,21 +27,19 @@ export default function ExamView({ toggleEditor }) {
     };
     const [questions, setQuestions] = useState([
         {
-            id: uuidv4(),
+          
             type: "text",
             question: "type your question here...",
             description: "",
             score: 0,
             image: [],
             image_url: [],
-            data: {
-                options: [
+            data: [
                   {
-                    uuid: uuidv4(),
-                    text: ""
+                   
+                    option: ""
                   }
                 ]
-              }
         },
     ]);
 
@@ -53,7 +51,7 @@ export default function ExamView({ toggleEditor }) {
           semester:"Semester 1",
           enable_date:"",
           expire_date:"",
-          classes:[],
+          class_room_id:[],
           description:"",
           questions:questions
  
@@ -72,21 +70,20 @@ export default function ExamView({ toggleEditor }) {
 
     const addQuestion = () => {
         const newQuestion = {
-            id: uuidv4(),
+           
             type: "text",
             question: "type your question here...",
             description: "",
             score: 0,
             image: [],
             image_url: [],
-            data: {
-                options: [
+            data: [
                   {
-                    uuid: uuidv4(),
-                    text: ""
+                   
+                    option: ""
                   }
                 ]
-              }
+              
         };
         setQuestions([...questions, newQuestion]);
         setSelectedQuestionIndex(questions.length);
@@ -107,6 +104,7 @@ export default function ExamView({ toggleEditor }) {
                     examLayer && "pointer-events-none"
                 }`}
             >
+                <pre>{JSON.stringify(exam, undefined, 2)}</pre>
                 <div className="p-4 flex gap-3 items-center border-solid border-b-[#e5dfdf] border-b-[1px] ">
                     <button onClick={toggleEditor}>
                         <ArrowLongLeftIcon className="text-gray-600 w-6" />
@@ -120,9 +118,10 @@ export default function ExamView({ toggleEditor }) {
                         <ArrowLongRightIcon className="w-6 " />
                     </button>
                 </div>
-                <pre>{JSON.stringify(exam, undefined, 2)}</pre> 
+                
                 <div className="grid py-8 px-4 grid-cols-[20%_80%] bg-[#f8f9fa] min-h-[89vh]">
-          
+                 
+
                     <QuestionAside
                         questions={questions}
                         selectedQuestionIndex={selectedQuestionIndex}

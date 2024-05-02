@@ -1,16 +1,16 @@
 import React from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ReactSelect from "../../../core/ReactSelect";
+import axiosClient from "../../../axios";
 
 export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
-    
     const handleInputChange = (e, field) => {
         setExam({ ...exam, [field]: e.target.value });
     };
 
     const handleClassSelect = (selectedOptions) => {
         const selectedValues = selectedOptions.map((option) => option.id);
-        setExam({ ...exam, classes: selectedValues });
+        setExam({ ...exam, class_room_id: selectedValues });
     };
 
     const handleModuleSelect = (selectedOption) => {
@@ -25,15 +25,31 @@ export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
         .toISOString()
         .slice(0, 16);
 
-        const onSubmit = (event) => {
-            event.preventDefault();
-            console.log("gjhg");
-     
-          };
+    const onSubmit = (ev) => {
+        ev.preventDefault();
+
+        const payload = { ...exam };
+        if (payload.image) {
+            payload.image = payload.image_url;
+        }
+        delete payload.image_url;
+
+       axiosClient.post("/exam", payload).then((res) => {
+        window.location.reload();
+console.log(res);
+        }).catch((err) => {
+            if (err && err.response) {
+                setError(err.response.data.message);
+            }
+         
+        });
+    };
 
     return (
-        <form action="#" method="POST" onSubmit={onSubmit} >
+        <form action="#" method="POST" onSubmit={onSubmit}>
             <div className="absolute bg-white z-50 [box-shadow:0_0_0_9999px_#000000b0]  shadow-sm rounded-sm  left-[50%] top-[10%] bottom-10 translate-x-[-50%] overflow-y-scroll  ">
+                {/* <pre>{JSON.stringify(exam, undefined, 2)}</pre>  */}
+
                 <div className=" py-3 px-4 flex justify-between items-center  relative  after:absolute after:w-full after:h-[1.5px] after:bg-gray-200 after:bottom-[-1px] after:left-0 ">
                     <div className="text-[#282828]">Exam</div>
                     <button className="w-7" onClick={toggleExamLayer}>

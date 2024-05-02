@@ -8,7 +8,7 @@
 
 <p>We inform you that your credentials to access to your account are as follows:</p>
 
-SID: {{ $sid }}<br>
+login: {{ $matricule }}<br>
 password:{{ $pwd }}<br>
 
 You can access to your account via the following link: <a href="{{ $url }}">{{ $url }}</a><br>

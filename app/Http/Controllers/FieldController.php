@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFieldRequest;
 use App\Http\Requests\UpdateFieldRequest;
-use App\Http\Resources\FieldResource;
 use App\Models\ClassRoom;
 use App\Models\Field;
 use App\Models\Level;

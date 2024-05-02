@@ -20,7 +20,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
- 
+            $table->string('matricule')->nullable();
+            $table->integer('student_class_room_id')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('student_phone_tutor')->nullable();
+            $table->string('address')->nullable();
+            $table->date('date_birth')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('place_birth')->nullable();
+            $table->string('student_bacalaureat')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

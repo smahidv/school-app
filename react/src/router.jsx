@@ -18,6 +18,8 @@ import AdminExams from "./users/admin/adminViews/AdminExams";
 import TeacherClass from "./users/teacher/teacherviews/TeacherClass";
 import TeacherExams from "./users/teacher/teacherviews/TeacherExams";
 import TeacherPeaple from "./users/teacher/teacherviews/TeacherPeaple";
+import StudentSubject from "./users/student/studentViews/StudentSubject";
+import StudentExamView from "./users/student/studentViews/StudentExamView";
 
 
 const router = createBrowserRouter([
@@ -117,8 +119,16 @@ const router = createBrowserRouter([
                 path: "/s",
                 element: <StudentDashboard />,
             },
+            {
+                path: "/s/:id",
+                element: <StudentSubject />
+            }
         ],
     },
+    {
+        path:"/exam/:id",
+        element:<StudentExamView/>
+    }
 ]);
 
 export default router;

@@ -3,7 +3,7 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -16,7 +16,7 @@ class CredentialsMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private string $title, private string  $fname,private string  $lname,private string  $sid,private string  $pwd,private string  $url)
+    public function __construct(private string $title, private string  $fname,private string  $lname,private string  $matricule,private string  $pwd,private string  $url)
     {
     }
 
@@ -41,7 +41,7 @@ class CredentialsMail extends Mailable
                 'title' => $this->title,
                 'fname' => $this->fname,
                 'lname' => $this->lname,
-                'sid' => $this->sid,
+                'matricule' => $this->matricule,
                 'pwd' => $this->pwd,
                 'url' => $this->url,
 

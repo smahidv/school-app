@@ -18,4 +18,13 @@ class ClassRoom extends Model
 {
     return $this->belongsToMany(Exam::class,'exams_class_rooms','exam_id','class_room_id');
 }
+
+public function users()
+{
+    return $this->belongsToMany(User::class,'users_class_rooms','user_id','class_room_id');
+}
+
+
+
+
 }

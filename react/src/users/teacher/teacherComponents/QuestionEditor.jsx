@@ -1,5 +1,4 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import { TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function QuestionEditor({
@@ -55,41 +54,53 @@ export default function QuestionEditor({
 
    
     const handleOptionChange = (e, index) => {
-        
-        const updatedOptions = [...selectedQuestion.data.options];
-        updatedOptions[index].text = e.target.value;
-
+        const updatedOptions = [...selectedQuestion.data];
+        updatedOptions[index].option = e.target.value;
+    
         const updatedQuestion = {
             ...selectedQuestion,
-            data: {
-                ...selectedQuestion.data,
-                options: updatedOptions,
-            },
+            data: updatedOptions,
         };
-
+    
         const updatedQuestions = [...questions];
         updatedQuestions[selectedQuestionIndex] = updatedQuestion;
         setQuestions(updatedQuestions);
     };
+    
 
     const addOption = () => {
-        const updatedOptions = [
-            ...(selectedQuestion.data.options || []),
-            { uuid: uuidv4(), text: "" },
-        ];
-
-        const updatedQuestion = {
-            ...selectedQuestion,
-            data: {
-                ...selectedQuestion.data,
-                options: updatedOptions,
-            },
-        };
-
-        const updatedQuestions = [...questions];
-        updatedQuestions[selectedQuestionIndex] = updatedQuestion;
+        const updatedQuestions = questions.map((question, index) => {
+            if (index === selectedQuestionIndex) {
+                return {
+                    ...question,
+                    data: [
+                        ...(question.data || []),
+                        { option: "" }
+                    ]
+                };
+            }
+            return question;
+        });
+    
         setQuestions(updatedQuestions);
     };
+    
+    const deleteOption = (index) => {
+        const updatedQuestions = questions.map((question, qIndex) => {
+            if (qIndex === selectedQuestionIndex) {
+                return {
+                    ...question,
+                    data: question.data.filter((_, oIndex) => oIndex !== index)
+                };
+            }
+            return question;
+        });
+    
+        setQuestions(updatedQuestions);
+    };
+    
+
+
 
     function shouldHaveOptions(type = null) {
         type = type || selectedQuestion.type;
@@ -98,23 +109,9 @@ export default function QuestionEditor({
   
 
 
-    const deleteOption = (index) => {
-        const updatedOptions = [...selectedQuestion.data.options];
-        updatedOptions.splice(index, 1);
-
-        const updatedQuestion = {
-            ...selectedQuestion,
-            data: {
-                ...selectedQuestion.data,
-                options: updatedOptions,
-            },
-        };
-
-        const updatedQuestions = [...questions];
-        updatedQuestions[selectedQuestionIndex] = updatedQuestion;
-        setQuestions(updatedQuestions);
-    };
-
+   
+    
+    
    
     return (
         <div>
@@ -147,6 +144,7 @@ export default function QuestionEditor({
                                 name=""
                                 id=""
                                 onChange={(e) => handleInputChange(e, "type")}
+                                value={selectedQuestion.type}
                             >
                                 <option value="text" className="text-white">
                                     text
@@ -167,6 +165,7 @@ export default function QuestionEditor({
                         <textarea
                             rows={5}
                             cols={40}
+                            value={selectedQuestion.description}
                             placeholder="Instructions (optional)"
                             className="bg-white rounded-md text-gray-500 placeholder:text-sm  shadow-md outline-none  w-full px-4 py-1"
                             onChange={(e) =>
@@ -234,17 +233,17 @@ export default function QuestionEditor({
                    <>
                         <div className="my-4">
                             {selectedQuestion.data &&
-                                selectedQuestion.data.options &&
-                                selectedQuestion.data.options.length === 0 && (
+                                selectedQuestion.data &&
+                                selectedQuestion.data.length === 0 && (
                                     <div className="text-xs text-gray-600 text-center py-2">
                                         You don't have any options defined
                                     </div>
                                 )}
                             {selectedQuestion.data &&
-                                selectedQuestion.data.options &&
-                                selectedQuestion.data.options.length > 0 && (
+                                selectedQuestion.data &&
+                                selectedQuestion.data.length > 0 && (
                                     <div>
-                                        {selectedQuestion.data.options.map(
+                                        {selectedQuestion.data.map(
                                             (option, index) => (
                                                 <div
                                                     key={index}
@@ -259,11 +258,12 @@ export default function QuestionEditor({
                                                             65 + index
                                                         )}
                                                     </div>
+                                                 
                                                     <input
                                                         type="text"
                                                         placeholder="Add answer"
                                                         className="bg-white rounded-md text-gray-500 placeholder:text-sm placeholder:font-semibold shadow-md outline-none  w-full px-4 py-1"
-                                                        value={option.text}
+                                                        value={option.option}
                                                         onChange={(e) =>
                                                             handleOptionChange(
                                                                 e,

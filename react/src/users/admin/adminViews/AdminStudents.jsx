@@ -8,8 +8,9 @@ import PaginationStudents from "../adminComponents/PaginationStudents";
 export default function AdminStudents() {
     const [students, setStudents] = useState([]);
     const [openStudentLayer, setOpenStudentLayer] = useState(false);
-    const [selectedStudent, setSelectedStudent] = useState();
-    const [meta, setMeta] = useState({});                           
+    const [selectedStudent, setSelectedStudent] = useState(null);
+    const [meta, setMeta] = useState({});       
+                   
     function toggleLayer() {
         setOpenStudentLayer(!openStudentLayer);
     }
@@ -17,6 +18,7 @@ export default function AdminStudents() {
         url = url || "/student";
         axiosClient.get(url).then(({ data }) => {
             setStudents(data.data);
+            console.log(data.data);
             setMeta(data.meta);
       
         });
@@ -32,6 +34,7 @@ export default function AdminStudents() {
     const changeSideInfo = (student) => {
         setSelectedStudent(student); 
         console.log(student);
+   
    
     }
 
@@ -51,8 +54,8 @@ export default function AdminStudents() {
                     openStudentLayer={openStudentLayer}
                 />
             ) : (
-                <div className="flex gap-4 w-full h-full mb-20 py-8 px-4 bg-[rgb(251,252,253)] rounded-3xl shadow-sm">
-                    <div className="w-[70%] ">
+                <div className="flex gap-4 w-full h-full mb-20 py-10 justify-center bg-[rgb(251,252,253)] rounded-3xl shadow-sm">
+                    <div className= {selectedStudent ? "w-[70%]" : "w-[100%] max-w-[900px]"} >
                         <div className="grid gap-4">
                             <div className="flex">
                                 <button
@@ -133,7 +136,7 @@ export default function AdminStudents() {
                                                                             <div className="inline-flex items-center gap-x-3">
                                                                                 <span>
                                                                                     {
-                                                                                        student.SID
+                                                                                        student.matricule
                                                                                     }
                                                                                 </span>
                                                                             </div>
@@ -155,7 +158,7 @@ export default function AdminStudents() {
                                                                             <div className="flex items-center gap-x-2">
                                                                                 <img
                                                                                     className="object-cover w-8 h-8 rounded-full"
-                                                                                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+                                                                                    src={student.image}
                                                                                     alt=""
                                                                                 />
                                                                                 <div>

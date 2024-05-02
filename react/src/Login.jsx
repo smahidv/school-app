@@ -5,12 +5,13 @@ import axiosClient from "./axios";
 import { useStateContext } from "./contexts/ContextProvider";
 
 export default function Login() {
-    const { setCurrentUser, setUserToken, userToken } = useStateContext();
+    
+    const { setCurrentUser, setUserToken } = useStateContext();
     const navigate = useNavigate();
 
     const [loginInput, setLogin] = useState({
-        email: "",
-        password: "",
+        matricule:"",
+        password:"",
     });
     const [error, setError] = useState("");
 
@@ -25,7 +26,7 @@ export default function Login() {
 
         axiosClient
             .post("/login", {
-                email: loginInput.email,
+                matricule: loginInput.matricule,
                 password: loginInput.password,
             })
             .then(({ data }) => {
@@ -48,6 +49,8 @@ export default function Login() {
 
     return (
         <div>
+
+         
             <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                 <div className="w-full max-w-md space-y-8">
                     <div>
@@ -76,21 +79,21 @@ export default function Login() {
                         <div className="-space-y-px rounded-md shadow-sm">
                             <div>
                                 <label
-                                    htmlFor="email-address"
+                                    htmlFor="matricule-address"
                                     className="sr-only"
                                 >
-                                    Email address
+                                    matricule address
                                 </label>
                                 <input
-                                    id="email-address"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
+                                    id="matricule-address"
+                                    name="matricule"
+                                
+                                    autoComplete="matricule"
                                     required
                                     className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                    placeholder="Email address"
+                                    placeholder="matricule address"
                                     onChange={handleInput}
-                                    value={loginInput.email}
+                                    value={loginInput.matricule}
                                 />
                             </div>
                             <div>
@@ -126,7 +129,8 @@ export default function Login() {
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> 
+            
         </div>
     );
 }

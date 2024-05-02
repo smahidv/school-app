@@ -64,7 +64,9 @@ export default function AdminLayout() {
         axiosClient.post("/logout").then(() => {
             setCurrentUser({});
             setUserToken(null);
+           
         });
+
     };
 
  
@@ -148,7 +150,7 @@ export default function AdminLayout() {
                 </div>
             )}
 
-            {!userToken || !currentUser && <Navigate to="/auth" />}
+            {(!userToken || !currentUser) && <Navigate to="/auth" />}
         </>
     );
 }

@@ -22,17 +22,33 @@ class User extends Authenticatable
     const ROLE_TEACHER = 2;
     const ROLE_STUDENT = 3;
     protected $fillable = [
-        'first name',
-        'last name',
+        'first_name',
+        'last_name',
         'role',
         'image',
         'email',
         'password',
-        'student_phone',
+        'student',
         'student_phone_tutor',
-        'student_address',
-        'student_class',
+        'address',
+        'student_class_room_id',
+        'phone',
+        'gender',
+        'student_bacalaureat',
+        'place_birth',
+        'date_birth'
     ];
+
+    public function classRoom()
+{
+    return $this->belongsTo(ClassRoom::class, 'student_class_room_id');
+}
+
+public function classrooms()
+{
+    return $this->belongsToMany(Classroom::class);
+}
+
 
     /**
      * The attributes that should be hidden for serialization.

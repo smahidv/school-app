@@ -33,7 +33,7 @@ class StoreExamRequest extends FormRequest
             'user_id' => 'exists:users,id',
             'module_id' => 'exists:modules,id',
             'class_room_id' => 'array|exists:class_rooms,id',
-            'description' => 'nullable|string',
+            'description' => 'nullable',
             'semester' => 'string',
            'enable_date' => 'required|date',
             'expire_date' => 'required|date|after:enable_date',
