@@ -6,7 +6,6 @@ export default function QuestionEditor({
     selectedQuestionIndex,
     setQuestions,
 }) {
-    
     const selectedQuestion = questions[selectedQuestionIndex];
 
     const handleInputChange = (e, field) => {
@@ -18,7 +17,7 @@ export default function QuestionEditor({
         updatedQuestions[selectedQuestionIndex] = updatedQuestion;
         setQuestions(updatedQuestions);
     };
-    
+
     const onImageChoose = (ev) => {
         const files = ev.target.files;
         const updatedImages = [...selectedQuestion.image_url];
@@ -52,67 +51,53 @@ export default function QuestionEditor({
 
     //////////////////////////////////////options///////////////////////////////////
 
-   
     const handleOptionChange = (e, index) => {
         const updatedOptions = [...selectedQuestion.data];
         updatedOptions[index].option = e.target.value;
-    
+
         const updatedQuestion = {
             ...selectedQuestion,
             data: updatedOptions,
         };
-    
+
         const updatedQuestions = [...questions];
         updatedQuestions[selectedQuestionIndex] = updatedQuestion;
         setQuestions(updatedQuestions);
     };
-    
 
     const addOption = () => {
         const updatedQuestions = questions.map((question, index) => {
             if (index === selectedQuestionIndex) {
                 return {
                     ...question,
-                    data: [
-                        ...(question.data || []),
-                        { option: "" }
-                    ]
+                    data: [...(question.data || []), { option: "" }],
                 };
             }
             return question;
         });
-    
+
         setQuestions(updatedQuestions);
     };
-    
+
     const deleteOption = (index) => {
         const updatedQuestions = questions.map((question, qIndex) => {
             if (qIndex === selectedQuestionIndex) {
                 return {
                     ...question,
-                    data: question.data.filter((_, oIndex) => oIndex !== index)
+                    data: question.data.filter((_, oIndex) => oIndex !== index),
                 };
             }
             return question;
         });
-    
+
         setQuestions(updatedQuestions);
     };
-    
-
-
 
     function shouldHaveOptions(type = null) {
         type = type || selectedQuestion.type;
         return ["radio", "checkbox"].includes(type);
-      }
-  
+    }
 
-
-   
-    
-    
-   
     return (
         <div>
             {!selectedQuestion && (
@@ -228,81 +213,88 @@ export default function QuestionEditor({
 
                     {/* /////////////////////////////////////////options/////////////////////////////////////////// */}
 
-                 
-                {shouldHaveOptions() &&
-                   <>
-                        <div className="my-4">
-                            {selectedQuestion.data &&
-                                selectedQuestion.data &&
-                                selectedQuestion.data.length === 0 && (
-                                    <div className="text-xs text-gray-600 text-center py-2">
-                                        You don't have any options defined
-                                    </div>
-                                )}
-                            {selectedQuestion.data &&
-                                selectedQuestion.data &&
-                                selectedQuestion.data.length > 0 && (
-                                    <div>
-                                        {selectedQuestion.data.map(
-                                            (option, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex gap-3 items-center mb-4"
-                                                >
-                                                    <div 
-                                                    className={`w-5 h-5 border-solid border-slate-400 border-[1.5px] 
-                                            ${selectedQuestion.type==='radio' && 'rounded-full'}
-                                                    `}></div>
-                                                    <div className="text-[rgb(96,131,255)] font-semibold text-lg">
-                                                        {String.fromCharCode(
-                                                            65 + index
-                                                        )}
+                    {shouldHaveOptions() && (
+                        <>
+                            <div className="my-4">
+                                {selectedQuestion.data &&
+                                    selectedQuestion.data &&
+                                    selectedQuestion.data.length === 0 && (
+                                        <div className="text-xs text-gray-600 text-center py-2">
+                                            You don't have any options defined
+                                        </div>
+                                    )}
+                                {selectedQuestion.data &&
+                                    selectedQuestion.data &&
+                                    selectedQuestion.data.length > 0 && (
+                                        <div>
+                                            {selectedQuestion.data.map(
+                                                (option, index) => (
+                                                    <div
+                                                        key={index}
+                                                        className="flex gap-3 items-center mb-4"
+                                                    >
+                                                        <div
+                                                            className={`w-5 h-5 border-solid border-slate-400 border-[1.5px] 
+                                            ${
+                                                selectedQuestion.type ===
+                                                    "radio" && "rounded-full"
+                                            }
+                                                    `}
+                                                        ></div>
+                                                        <div className="text-[rgb(96,131,255)] font-semibold text-lg">
+                                                            {String.fromCharCode(
+                                                                65 + index
+                                                            )}
+                                                        </div>
+
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Add answer"
+                                                            className="bg-white rounded-md text-gray-500 placeholder:text-sm placeholder:font-semibold shadow-md outline-none  w-full px-4 py-1"
+                                                            value={
+                                                                option.option
+                                                            }
+                                                            onChange={(e) =>
+                                                                handleOptionChange(
+                                                                    e,
+                                                                    index
+                                                                )
+                                                            }
+                                                        />
+                                                        <TrashIcon
+                                                            onClick={() =>
+                                                                deleteOption(
+                                                                    index
+                                                                )
+                                                            }
+                                                            className="w-4 text-red-500 cursor-pointer"
+                                                        />
                                                     </div>
-                                                 
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Add answer"
-                                                        className="bg-white rounded-md text-gray-500 placeholder:text-sm placeholder:font-semibold shadow-md outline-none  w-full px-4 py-1"
-                                                        value={option.option}
-                                                        onChange={(e) =>
-                                                            handleOptionChange(
-                                                                e,
-                                                                index
-                                                            )
-                                                        }
-                                                    />
-                                                    <TrashIcon
-                                                        onClick={() =>
-                                                            deleteOption(index)
-                                                        }
-                                                        className="w-4 text-red-500 cursor-pointer"
-                                                    />
-                                                </div>
-                                            )
-                                        )}
-                                    </div>
-                                )}
-                        </div>
-                        <div
-                            className="flex gap-3 items-center cursor-pointer"
-                            onClick={addOption}
-                        >
-                            <svg
-                                className="w-4 text-[rgb(96,131,255)] fill-current"
-                                viewBox="0 0 512 512"
-                                xmlns="http://www.w3.org/2000/svg"
+                                                )
+                                            )}
+                                        </div>
+                                    )}
+                            </div>
+                            <div
+                                className="flex gap-3 items-center cursor-pointer"
+                                onClick={addOption}
                             >
-                                <g id="_03_Login" data-name="03 Login">
-                                    <path d="m256 512a25 25 0 0 1 -25-25v-462a25 25 0 0 1 50 0v462a25 25 0 0 1 -25 25z" />
-                                    <path d="m487 281h-462a25 25 0 0 1 0-50h462a25 25 0 0 1 0 50z" />
-                                </g>
-                            </svg>
-                            <p className="text-[rgb(96,131,255)] w-fit  relative  after:absolute after:w-full after:h-[1px] after:bg-[rgb(96,131,255)]  after:bottom-[1.5px] after:left-0">
-                                Add options
-                            </p>
-                        </div>
-                    </> 
-                }
+                                <svg
+                                    className="w-4 text-[rgb(96,131,255)] fill-current"
+                                    viewBox="0 0 512 512"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <g id="_03_Login" data-name="03 Login">
+                                        <path d="m256 512a25 25 0 0 1 -25-25v-462a25 25 0 0 1 50 0v462a25 25 0 0 1 -25 25z" />
+                                        <path d="m487 281h-462a25 25 0 0 1 0-50h462a25 25 0 0 1 0 50z" />
+                                    </g>
+                                </svg>
+                                <p className="text-[rgb(96,131,255)] w-fit  relative  after:absolute after:w-full after:h-[1px] after:bg-[rgb(96,131,255)]  after:bottom-[1.5px] after:left-0">
+                                    Add options
+                                </p>
+                            </div>
+                        </>
+                    )}
 
                     {/* /////////////////////////////////////////options/////////////////////////////////////////// */}
                 </div>

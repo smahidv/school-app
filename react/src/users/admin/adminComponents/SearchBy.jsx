@@ -1,16 +1,16 @@
 import React from "react";
 
-export default function SearchBy() {
+export default function SearchBy({teacher}) {
     return (
-        <div className="flex justify-center">
+        <div className={`flex ${teacher ? "justify-start" : "justify-center"}`}>
             <div
                 className="relative 
         "
             >
                 <input
                     type="text"
-                    placeholder="Search students"
-                    className="py-3  outline-none px-[5px] shadow-sm   text-[.8rem] rounded-md w-[300px]  border-[rgb(138,139,140)] pl-9 "
+                    placeholder={teacher ? "Search teachers" : "Search students"}
+                    className="py-1  outline-none px-[5px] shadow-sm   text-[.8rem] rounded-md w-[300px]  border-[rgb(138,139,140)] pl-9 "
                 />
                 <div
                     className="absolute top-[55%] -translate-y-1/2 left-0 pl-3  

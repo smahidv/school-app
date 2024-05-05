@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function BlackButton({ to = false, content = "" ,onClick}) {
+export default function BlackButton({ to = false, content = "" ,onClick,type}) {
     return (
         <>
             {to ? (
@@ -14,6 +14,7 @@ export default function BlackButton({ to = false, content = "" ,onClick}) {
             ) : (
                 <button 
                 onClick={onClick}
+                type={type}
                 className="text-white  bg-slate-900 px-3 py-1  rounded-[5px] capitalize text-[0.7rem]">
                     {content}
                 </button>

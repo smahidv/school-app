@@ -29,7 +29,7 @@ export default function TeacherLayout() {
                     <div>
                         <img
                             className="w-9 h-9 rounded-full cursor-pointer"
-                            src="https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
+                            src={`http://localhost:8000/${currentUser.image}`}
                             alt=""
                             onClick={toggleLogout}
                         />

@@ -54,8 +54,8 @@ export default function AdminStudents() {
                     openStudentLayer={openStudentLayer}
                 />
             ) : (
-                <div className="flex gap-4 w-full h-full mb-20 py-10 justify-center bg-[rgb(251,252,253)] rounded-3xl shadow-sm">
-                    <div className= {selectedStudent ? "w-[70%]" : "w-[100%] max-w-[900px]"} >
+                <div className="flex gap-4  w-full  mb-20 py-10 justify-center bg-[rgb(251,252,253)] rounded-3xl shadow-sm">
+                    <div className= {selectedStudent ? "w-[70%]" : "w-[100%] "} >
                         <div className="grid gap-4">
                             <div className="flex">
                                 <button
@@ -68,12 +68,12 @@ export default function AdminStudents() {
 
                             <SearchBy />
 
-                            <section className="container">
-                                <div className="flex flex-col">
-                                    <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                        <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                            <section className="container w-full  ">
+                                <div className="flex flex-col ml-8 mr-4 ">
+                                    <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
+                                        <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8  ">
                                             <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700  ">
                                                     <thead className="bg-gray-50 dark:bg-gray-800">
                                                         <tr>
                                                             <th
@@ -120,7 +120,7 @@ export default function AdminStudents() {
                                                             </th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                                                    <tbody className=" bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900 ">
                                                         {students.length > 0 &&
                                                             students.map(
                                                                 (student) => (
@@ -128,7 +128,7 @@ export default function AdminStudents() {
                                                                         key={
                                                                             student.id
                                                                         }
-                                                                        className={`cursor-pointer ${selectedStudent === student ? 'bg-gray-100' : ''}`}
+                                                                        className={`cursor-pointer  ${selectedStudent === student ? 'bg-gray-100' : ''}`}
 
                                                                         onClick={() => changeSideInfo(student)} 
                                                                     >

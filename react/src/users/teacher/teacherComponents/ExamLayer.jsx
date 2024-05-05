@@ -34,15 +34,16 @@ export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
         }
         delete payload.image_url;
 
-       axiosClient.post("/exam", payload).then((res) => {
-        window.location.reload();
-console.log(res);
-        }).catch((err) => {
-            if (err && err.response) {
-                setError(err.response.data.message);
-            }
-         
-        });
+        axiosClient
+            .post("/exam", payload)
+            .then((res) => {
+                window.location.reload();
+            })
+            .catch((err) => {
+                if (err && err.response) {
+                    setError(err.response.data.message);
+                }
+            });
     };
 
     return (
@@ -69,7 +70,7 @@ console.log(res);
                                 </label>
                                 <ReactSelect
                                     onChange={handleModuleSelect}
-                                    endpoint="/modules"
+                                    endpoint="/teacher-modules"
                                 />
                             </div>
 
@@ -135,7 +136,7 @@ console.log(res);
                             <label className="mb-1">Classes</label>
                             <ReactSelect
                                 onChange={handleClassSelect}
-                                endpoint="/classes"
+                                endpoint="/teacher-classes"
                                 isMulti
                             />
                         </div>

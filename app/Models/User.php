@@ -46,9 +46,12 @@ class User extends Authenticatable
 
 public function classrooms()
 {
-    return $this->belongsToMany(Classroom::class);
+    return $this->belongsToMany(Classroom::class,'users_class_rooms','user_id','class_room_id');
 }
-
+public function modules()
+{
+    return $this->hasMany(Module::class,'user_id');
+}
 
     /**
      * The attributes that should be hidden for serialization.

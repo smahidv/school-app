@@ -20,7 +20,7 @@ import TeacherExams from "./users/teacher/teacherviews/TeacherExams";
 import TeacherPeaple from "./users/teacher/teacherviews/TeacherPeaple";
 import StudentSubject from "./users/student/studentViews/StudentSubject";
 import StudentExamView from "./users/student/studentViews/StudentExamView";
-
+import AdminTeacherForm from "./users/admin/adminViews/AdminTeacherForm";
 
 const router = createBrowserRouter([
     {
@@ -63,7 +63,7 @@ const router = createBrowserRouter([
                     },
                     {
                         path: "/fields/create/:id/modules",
-                        element: <ModulesEditor  />,
+                        element: <ModulesEditor />,
                     },
                 ],
             },
@@ -84,6 +84,11 @@ const router = createBrowserRouter([
                 element: <Admingrades />,
             },
         ],
+        
+    },
+    {
+        path: "/admin/teachers/:id",
+        element: <AdminTeacherForm />,
     },
     {
         path: "/t",
@@ -96,7 +101,7 @@ const router = createBrowserRouter([
             {
                 path: "/t/c",
                 element: <TeacherClass />,
-                children:[
+                children: [
                     {
                         path: "/t/c/w",
                         element: <TeacherExams />,
@@ -105,10 +110,8 @@ const router = createBrowserRouter([
                         path: "/t/c/p",
                         element: <TeacherPeaple />,
                     },
-                ]
+                ],
             },
-            
-            
         ],
     },
     {
@@ -121,14 +124,14 @@ const router = createBrowserRouter([
             },
             {
                 path: "/s/:id",
-                element: <StudentSubject />
-            }
+                element: <StudentSubject />,
+            },
         ],
     },
     {
-        path:"/exam/:id",
-        element:<StudentExamView/>
-    }
+        path: "/exam/:id",
+        element: <StudentExamView />,
+    },
 ]);
 
 export default router;

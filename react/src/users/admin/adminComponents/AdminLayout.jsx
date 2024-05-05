@@ -74,9 +74,9 @@ export default function AdminLayout() {
     return (
         <>
             {userToken && currentUser.role === 1 && (
-                <div className="flex h-full  ">
+                <div className="flex h-full w-full  ">
                     <aside
-                        className={`shadow-xl pt-4 max-w-fit  min-h-full relative ${
+                        className={`shadow-xl pt-4 max-w-fit  min-h-[100vh] relative ${
                             isSideBarOpen ? "min-w-[200px]  " : "w-[90px]  "
                         } `}
                     >
@@ -119,7 +119,7 @@ export default function AdminLayout() {
                             }`}
                         />
                     </div>
-                    <main className=" pl-7 pr-7  overflow-auto w-full ">
+                    <main className=" pl-7 pr-7  overflow-auto w-full">
                         <div className="flex justify-between pt-4 pb-10">
                             <div className="font-semibold text-2xl">
                                 {title}

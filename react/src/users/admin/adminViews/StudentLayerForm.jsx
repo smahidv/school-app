@@ -64,6 +64,7 @@ export default function StudentLayerForm({ toggleLayer }) {
         // });
     };
     return (
+     
         <div className="w-full  overflow-auto mb-10 py-4 shadow-2xl ">
             <div className="flex items-center gap-5 relative px-4 after:absolute after:w-full after:h-[0.1px] after:bg-[rgb(202,202,203)] after:left-0 after:top-9 after:rounded-full">
                 <button onClick={toggleLayer} className="w-6">
@@ -72,7 +73,7 @@ export default function StudentLayerForm({ toggleLayer }) {
                 <div className="font-bold">Create new Student</div>
             </div>
             <div className="mt-9 px-4 ">
-                <pre >{JSON.stringify(students, undefined, 2)}</pre>
+                {/* <pre >{JSON.stringify(students, undefined, 2)}</pre> */}
 
                 <form action="#" method="post " onSubmit={onSubmit}>
                     <div className="grid gap-6 ">
@@ -255,8 +256,7 @@ export default function StudentLayerForm({ toggleLayer }) {
                                 <ReactSelect
                                     name="class"
                                     onChange={handleClassSelect}
-                                    value={students.class}
-                                    endpoint={"/classes"}
+                                    endpoint={"/all-classes"}
                                 />
                             </div>
                         </div>

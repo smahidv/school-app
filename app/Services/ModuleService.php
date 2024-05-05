@@ -23,7 +23,7 @@ class ModuleService
         FROM modules 
         JOIN class_rooms ON modules.level_id = class_rooms.level_id 
         JOIN users_class_rooms ON users_class_rooms.class_room_id= class_rooms.id 
-        JOIN users on users_class_rooms.user_id = users.id
+        JOIN users on modules.user_id = users.id
             WHERE class_rooms.id = :student_class_room_id
         ", ['student_class_room_id' => $studentClassRoomId]);
 

@@ -28,8 +28,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/classes', [FieldController::class, 'getClasses']);
-    Route::get('/modules', [FieldController::class, 'getModules']);
+  
+  
     Route::post('/logout', [AuthController::class, 'logout']);
 
 
@@ -37,13 +37,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('field', FieldController::class);
         Route::apiResource('student', studentController::class);
         Route::post('/users-import', [TeacherController::class, 'import']);
-        Route::get('/users-export', [TeacherController::class, 'export']);
+        Route::apiResource('teacher',TeacherController::class);
+        Route::get('/all-modules', [FieldController::class, 'getAllModules']);
+        Route::get('/all-classes', [FieldController::class, 'getAllClasses']);
 
 
     });
 
     Route::middleware('teacher')->group(function () {
         Route::apiResource('exam', examController::class);
+        Route::get('/teacher-modules', [FieldController::class, 'getModules']);
+        Route::get('/teacher-classes', [FieldController::class, 'getClasses']);
+      
 
     });
 

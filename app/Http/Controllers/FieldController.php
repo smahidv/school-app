@@ -290,16 +290,43 @@ private function updateLevel(Level $level, $levelData)
 
 public function getClasses(Request $request)
 {
+
     return response()->json(
-        ClassRoom::select("id","name")->get()
+        ClassRoom::select('class_rooms.id', 'class_rooms.name')
+        ->join('users_class_rooms', 'users_class_rooms.class_room_id', '=', 'class_rooms.id')
+        ->distinct()
+        ->get()
     );
 }
 
 public function getModules(Request $request)
 {
+ 
+    $user = $request->user();
+    // dd($user ->toArray());
+    $modules = Module::where('user_id', $user->id)
+                     ->select('id', 'name')
+                     ->get();
+    
+    return response()->json($modules);
+}
+
+public function getAllClasses(Request $request)
+{
+
     return response()->json(
-        Module::select("id","name")->get()
+        ClassRoom::select('id', 'name')->get()
     );
 }
+public function getAllModules(Request $request)
+{
+    return response()->json(
+        Module::select('id', 'name')->get()
+
+    );
+}
+
+
+
 
 }
