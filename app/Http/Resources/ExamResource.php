@@ -17,15 +17,17 @@ class ExamResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'teacher' => $this->user->first_name . ' ' . $this->user->last_name,
+            'description'=>$this->description,
+            'semester'=>$this->semester,
             'status' => $this->status,
             'duration' => $this->duration,
-            'module_id' => $this->module_id,
+            'module' => $this->module->name,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
             'enable_date' => (new \DateTime($this->expire_date))->format('Y-m-d H:i:s'),
             'expire_date' => (new \DateTime($this->enable_date))->format('Y-m-d H:i:s'),
-            'classroom_ids' => $this->classes()->pluck('class_rooms.id'),
-            'questions' => ExamQuestionResource::collection($this->questions)
+            
         ];
     }
 }

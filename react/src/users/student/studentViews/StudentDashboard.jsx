@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { EllipsisVerticalIcon, BellAlertIcon } from "@heroicons/react/20/solid";
+import {  BellAlertIcon } from "@heroicons/react/20/solid";
 import { NavLink } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios";
@@ -15,7 +15,7 @@ export default function StudentDashboard() {
                 `/dashboard?student_class_room_id=${currentUser.student_class_room_id}`
             )
             .then(({ data }) => {
-                setData(data);
+                setData(data.data);
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
@@ -27,23 +27,20 @@ export default function StudentDashboard() {
     }, []);
 
     return (
-        <div className="w-full  grid grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))]  gap-7 my-3">
+        <div className="w-full  grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]  gap-7 mr-6 my-10">
             {data.map((d,index)=>(
                  <NavLink
                  key={index}
-                 to="/s/:id "
-                 className="border-[.5px] rounded-xl  border-solid border-gray-800 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer"
+                 to={`/s/${d.module_id}`}
+                 className="border-[.5px] rounded-xl  border-solid border-gray-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] cursor-pointer"
              >
-                 <div className="relative bg-pink-100 rounded-t-xl">
+                 <div className="relative bg-[rgb(228,230,236)] rounded-t-xl">
                      <div className="px-4 py-2">
-                         <div className="flex justify-between items-center">
-                             <p>{d.class_room_name}</p>
-                             <div>
-                                 <EllipsisVerticalIcon className="w-4" />
-                             </div>
-                         </div>
-                         <div>{d.module_name}</div>
-                         <div>{d.first_name}{" "}{d.last_name}</div>
+                     <div className="font-bold hover:underline text-lg">{d.module_name}</div>
+                      
+                             <p className="text-xs">{d.class_room_name}</p>
+                       
+                         <div className="text-xs">{d.first_name}{" "}{d.last_name}</div>
                      </div>
  
                      <div className="absolute bottom-[-10px] right-6  z-30  ">

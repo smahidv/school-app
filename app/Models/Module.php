@@ -18,6 +18,10 @@ class Module extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function exams()
+    {
+        return $this->hasMany(Exam::class);
+    }
 
  
     

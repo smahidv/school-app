@@ -17,14 +17,22 @@ class ExamQuestionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'image' => $this->image ? URL::to($this->image) : null,
+            'images' => $this->formatImages($this->image),
             'type' => $this->type,
             'question' => $this->question,
             'score' => $this->score,
             'description' => $this->description,
-            'data' => json_decode($this->data)
+            'options' => json_decode($this->data)
         ];
 
         
+    }
+
+    private function formatImages($images)
+    {
+        $decodedImages = json_decode($images, true) ?? [];
+        return array_map(function($image) {
+            return URL::to($image);
+        }, $decodedImages);
     }
 }

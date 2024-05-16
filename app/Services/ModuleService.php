@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Str;
 
+
 class ModuleService
 {
 
@@ -16,17 +17,15 @@ class ModuleService
 
         $data = DB::select("
         SELECT DISTINCT modules.name as module_name,
+        modules.id as module_id,
         users.image, 
                users.first_name, 
                users.last_name,  
                class_rooms.name as class_room_name 
-        FROM modules 
-        JOIN class_rooms ON modules.level_id = class_rooms.level_id 
-        JOIN users_class_rooms ON users_class_rooms.class_room_id= class_rooms.id 
-        JOIN users on modules.user_id = users.id
-            WHERE class_rooms.id = :student_class_room_id
+       FROM modules JOIN class_rooms on modules.level_id = class_rooms.level_id
+        JOIN users on users.id=modules.user_id
+        where class_rooms.id=:student_class_room_id
         ", ['student_class_room_id' => $studentClassRoomId]);
-
 
         return $data;
     }

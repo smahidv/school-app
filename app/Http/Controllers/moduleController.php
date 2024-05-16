@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ModuleResource;
 use App\Services\ModuleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
 class moduleController extends Controller
@@ -17,6 +19,7 @@ class moduleController extends Controller
     }
     public function fetchDataModules(Request $request)
     {
+        
       
          $validator = Validator::make($request->all(), [
             'student_class_room_id' => 'required|integer', 
@@ -31,9 +34,8 @@ class moduleController extends Controller
         $studentClassRoomId = $request->input('student_class_room_id');
 
         $data = $this->moduleService->fetchDataModules($studentClassRoomId);
-
-        
-        return response()->json($data);
+   
+        return ModuleResource::collection($data);
  
     }
 }

@@ -18,7 +18,6 @@ export default function AdminStudents() {
         url = url || "/student";
         axiosClient.get(url).then(({ data }) => {
             setStudents(data.data);
-            console.log(data.data);
             setMeta(data.meta);
       
         });

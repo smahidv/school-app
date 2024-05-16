@@ -100,7 +100,7 @@ export default function ExamView({ toggleEditor }) {
             {examLayer && <ExamLayer exam={exam}  setExam={setExam} toggleExamLayer={toggleExamLayer} />}
 
             <div
-                className={`bg-white absolute w-full h-full top-0 z-30 ${
+                className={`bg-white absolute w-full min-h-screen top-0 z-30   ${
                     examLayer && "pointer-events-none overflow-hidden"
                 }`}
             >
@@ -119,7 +119,7 @@ export default function ExamView({ toggleEditor }) {
                     </button>
                 </div>
                 
-                <div className="grid py-8 px-4 grid-cols-[20%_80%] bg-[#f8f9fa] min-h-[89vh]">
+                <div className="grid py-8 px-4 grid-cols-[20%_80%] bg-[#f8f9fa]  min-h-screen ">
                  
 
                     <QuestionAside

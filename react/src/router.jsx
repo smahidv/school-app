@@ -103,7 +103,7 @@ const router = createBrowserRouter([
                 element: <TeacherClass />,
                 children: [
                     {
-                        path: "/t/c/w",
+                        path: "/t/c/:classId/:moduleId",
                         element: <TeacherExams />,
                     },
                     {

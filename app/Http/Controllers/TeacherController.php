@@ -6,10 +6,10 @@ use App\Http\Requests\TeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
 use App\Http\Resources\TeacherResource;
 use App\Imports\UsersImport;
-use App\Models\ClassRoom;
+
 use App\Models\User;
 use App\Services\ModuleService;
-use Illuminate\Support\Arr;
+
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;

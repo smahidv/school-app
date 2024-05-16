@@ -290,13 +290,9 @@ private function updateLevel(Level $level, $levelData)
 
 public function getClasses(Request $request)
 {
-
-    return response()->json(
-        ClassRoom::select('class_rooms.id', 'class_rooms.name')
-        ->join('users_class_rooms', 'users_class_rooms.class_room_id', '=', 'class_rooms.id')
-        ->distinct()
-        ->get()
-    );
+    $user = $request->user();
+    $classes = $user->classRooms()->select('class_rooms.id', 'class_rooms.name')->get();
+return json_encode($classes);
 }
 
 public function getModules(Request $request)

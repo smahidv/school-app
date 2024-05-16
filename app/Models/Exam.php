@@ -17,5 +17,16 @@ class Exam extends Model
     {
         return $this->hasMany(ExamQuestions::class);
     }
+    public function module()
+    {
+        return $this->belongsTo(Module::class);
+    }
+    public function user()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
+
+
+
 
 }

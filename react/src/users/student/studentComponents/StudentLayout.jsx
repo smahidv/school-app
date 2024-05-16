@@ -11,7 +11,7 @@ export default function StudentLayout() {
             <div className="p-4 w-full relative after:absolute after:w-full after:h-[0.1px] after:bg-[rgb(202,202,203)] after:left-0 after:bottom-0 after:rounded-full  ">
                 <p className="text-2xl text-gray-800">Subjects</p>
             </div>
-            <div className="flex h-full items-start gap-10">
+            <div className="flex h-full items-start gap-12">
                 <StudentSideNavigation />
 
                 <Outlet />

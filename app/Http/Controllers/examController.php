@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Enums\QuestionTypeEnum;
 use App\Http\Requests\StoreExamRequest;
+use App\Http\Resources\ExamQuestionResource;
 use App\Http\Resources\ExamResource;
 use App\Models\Exam;
 use App\Models\ExamQuestions;
+use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
@@ -19,9 +21,11 @@ class examController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        
+        
+        
     }
 
     /**
@@ -65,8 +69,10 @@ class examController extends Controller
         // Create questions
         foreach ($validated['questions'] as $questionData) {
             $this->createQuestion($questionData, $exam->id);
+            
         }
-    
+       
+
         return new ExamResource($exam);
     }
     
@@ -120,20 +126,52 @@ class examController extends Controller
                 ]);
                 $validatedData = $validator->validate();
                 $validatedData['exam_id'] = $examId;
-                if (isset($data['image'])) {
+          
+                if (isset( $validatedData['image'])) {
                     // Ensure $data['image'] is an array
-                    if (!is_array($data['image'])) {
+                    if (!is_array(  $validatedData ['image'])) {
                         throw new \Exception('Image data must be an array');
                     }
-                    // Save multiple images
-                    $imagePaths = $this->saveImage($data['image']);
-                    // Serialize the array of image paths into a JSON string
+                
+                    $imagePaths = $this->saveImage( $validatedData['image']);
+                  
                     $validatedData['image'] = json_encode($imagePaths);
                 }
 
         return ExamQuestions::create($validatedData);
     }
+
+    public function getExams(Request $request){
+    
+      
+        $moduleId = $request["moduleId"];
+        $classRoomId = $request["classRoomId"];
+        $exams = Module::findOrFail($moduleId)
+            ->exams()
+            ->join('exams_class_rooms', 'exams_class_rooms.exam_id', '=', 'exams.id')
+            ->join('modules', 'modules.id', '=', 'exams.module_id')
+            ->where('exams_class_rooms.class_room_id', $classRoomId)
+            ->distinct()
+            ->get();
+
+    
+    
+        return json_encode($exams);
+    }
    
+    public function getByExam(Exam $exam)
+    {
+     
+        $questions = ExamQuestions::with('exam')
+        ->where('exam_id', $exam->id)
+        ->paginate(1);
+
+        return [                  
+            'exam' =>new ExamResource($exam),
+            'questions' => ExamQuestionResource::collection($questions)->response()->getData(true)
+          ];
+    }
+
 
     private function saveImage($images)
 {
@@ -181,6 +219,8 @@ class examController extends Controller
     {
         return now()->lte($expireDate) ? 'ongoing' : 'finished';
     }
+
+
 }
 
 
