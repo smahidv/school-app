@@ -28,11 +28,17 @@ export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
     const onSubmit = (ev) => {
         ev.preventDefault();
 
+        
+
         const payload = { ...exam };
-        if (payload.image) {
-            payload.image = payload.image_url;
-        }
-        delete payload.image_url;
+        payload.questions.forEach(question => {
+
+            if (Array.isArray(question.image_url) && question.image_url.length > 0) {
+              question.image = question.image_url;
+            }
+
+            delete question.image_url;
+          });
 
         axiosClient
             .post("/exam", payload)

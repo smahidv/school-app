@@ -6,6 +6,7 @@ use App\Enums\QuestionTypeEnum;
 use App\Http\Requests\StoreExamRequest;
 use App\Http\Resources\ExamQuestionResource;
 use App\Http\Resources\ExamResource;
+use App\Http\Resources\ExamWithQuestionsResource;
 use App\Models\Exam;
 use App\Models\ExamQuestions;
 use App\Models\Module;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Support\Arr;
 
 class examController extends Controller
 {
@@ -25,6 +27,7 @@ class examController extends Controller
     {
         
         
+
         
     }
 
@@ -71,8 +74,7 @@ class examController extends Controller
             $this->createQuestion($questionData, $exam->id);
             
         }
-       
-
+    //    dd($exam->image);
         return new ExamResource($exam);
     }
     
@@ -81,9 +83,14 @@ class examController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Exam $exam,Request $request)
     {
-        //
+   
+        $user = $request->user();
+        if ($user->id !== $exam->user_id) {
+            return abort(403, 'Unauthorized action');
+        }
+        return new ExamWithQuestionsResource($exam);
     }
 
     /**
@@ -97,9 +104,38 @@ class examController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+
+  public function update(StoreExamRequest $request,Exam $exam)
+    { 
+        
+
+        $data = $request->validated();
+
+        $exam->update($data);
+           
+  // Get ids as plain array of existing questions
+        $existingIds = $exam->questions()->pluck('id')->toArray(); 
+ // Get ids as plain array of new questions
+        $newIds = Arr::pluck($data['questions'], 'id');  
+        $toDelete = array_diff($existingIds, $newIds);
+        $toAdd = array_diff($newIds, $existingIds);
+
+        ExamQuestions::destroy($toDelete);
+
+       // Create new questions
+        foreach ($data['questions'] as $question) {
+            
+            if (in_array($question['id'], $toAdd)) {
+                $this->createQuestion($question,$exam->id);
+            }
+        }
+
+        $questionMap = collect($data['questions'])->keyBy('id');
+        foreach ($exam->questions as $question) {
+            if (isset($questionMap[$question->id])) {
+                $this->updateQuestion($question, $questionMap[$question->id]);
+            }
+        }
     }
 
     /**
@@ -134,11 +170,31 @@ class examController extends Controller
                     }
                 
                     $imagePaths = $this->saveImage( $validatedData['image']);
-                  
-                    $validatedData['image'] = json_encode($imagePaths);
-                }
 
+                    $validatedData['image'] = json_encode($imagePaths); 
+                  
+                }
+         
+             
         return ExamQuestions::create($validatedData);
+    }
+
+    private function updateQuestion(ExamQuestions $question, $data)
+    {
+        if (is_array($data['data'])) {
+            $data['data'] = json_encode($data['data']);
+        }
+        $validator = Validator::make($data, [
+            'question' => 'required|string',
+                    'type' => ['required', new Enum(QuestionTypeEnum::class)],
+                    'score' => 'required',
+                    'description' => 'nullable|string',
+                    'data' => 'present',
+                    'exam_id' => 'exists:App\Models\Exam,id',
+                    'image' => 'nullable|array',
+        ]);
+
+        return $question->update($validator->validated());
     }
 
     public function getExams(Request $request){

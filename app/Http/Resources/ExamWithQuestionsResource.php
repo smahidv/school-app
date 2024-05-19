@@ -5,8 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-
-class ExamResource extends JsonResource
+class ExamWithQuestionsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -27,6 +26,7 @@ class ExamResource extends JsonResource
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
             'enable_date' => (new \DateTime($this->enable_date))->format('Y-m-d H:i:s'),
             'expire_date' => (new \DateTime($this->expire_date))->format('Y-m-d H:i:s'),
+            'questions' => ExamQuestionResource::collection($this->questions)
             
         ];
     }

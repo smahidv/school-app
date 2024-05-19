@@ -29,11 +29,13 @@ class StoreExamRequest extends FormRequest
      */
     public function rules(): array
     {
+   
         return [
-            'user_id' => 'exists:users,id',
+
+            'user_id' => 'required',
+            'description' => 'nullable|string',         
             'module_id' => 'exists:modules,id',
-            'class_room_id' => 'array|exists:class_rooms,id',
-            'description' => 'nullable',
+            'class_room_id' => 'array|exists:class_rooms,id',    
             'semester' => 'string',
            'enable_date' => 'required|date',
             'expire_date' => 'required|date|after:enable_date',

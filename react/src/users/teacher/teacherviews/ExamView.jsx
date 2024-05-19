@@ -104,7 +104,7 @@ export default function ExamView({ toggleEditor }) {
                     examLayer && "pointer-events-none overflow-hidden"
                 }`}
             >
-                {/* <pre>{JSON.stringify(exam, undefined, 2)}</pre> */}
+                <pre>{JSON.stringify(exam, undefined, 2)}</pre>
                 <div className="p-4 flex gap-3 items-center border-solid border-b-[#e5dfdf] border-b-[1px] ">
                     <button onClick={toggleEditor}>
                         <ArrowLongLeftIcon className="text-gray-600 w-6" />
