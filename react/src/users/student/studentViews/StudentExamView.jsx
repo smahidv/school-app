@@ -15,8 +15,6 @@ export default function StudentExamView() {
     const [reviewed, setReviewed] = useState({});
     const [answeredQuestions, setAnsweredQuestions] = useState([]);
 
-    
-
     function getExamQuestions(url) {
         url = url || `/getByExam/${id}`;
         axiosClient.get(url).then(({ data }) => {
@@ -25,16 +23,13 @@ export default function StudentExamView() {
             setMeta(data.questions.meta);
         });
     }
-    
+
     function handleReview(currentPage) {
-        setReviewed(prevState => ({
+        setReviewed((prevState) => ({
             ...prevState,
             [currentPage]: !prevState[currentPage],
         }));
-      
     }
-
-      
 
     function fancyTimeFormat(duration) {
         // Hours, minutes and seconds
@@ -79,11 +74,9 @@ export default function StudentExamView() {
                         onClick={onClick}
                         reviewed={reviewed}
                         answeredQuestions={answeredQuestions}
-                        
-                    
                     />
 
-                    <div className="  py-10  p-[min(5em,_5dvw)]">
+                    <div className="relative  py-10  p-[min(5em,_5dvw)]">
                         <div className="flex justify-between   ">
                             <div className="leading-3 relative after:absolute after:h-[1.5px] after:bg-gray-300 after:w-[50px] after:right-[-50px] after:top-[20px] after:rotate-90 ">
                                 <p className="text-gray-700 capitalize font-bold text-3xl">
@@ -93,8 +86,6 @@ export default function StudentExamView() {
                                     {exam.semestre}
                                 </small>
                             </div>
-
-                          
 
                             <div className="leading-3 relative after:absolute after:h-[1.5px] after:bg-gray-300 after:w-[50px] after:left-[-50px]  after:top-[20px] after:rotate-90">
                                 <div className="flex gap-2 items-center ">
@@ -115,6 +106,13 @@ export default function StudentExamView() {
                                 </small>
                             </div>
                         </div>
+                        <button
+                                type="submit"
+                                className=" text-white absolute bg-purple-600 rounded-full  py-[4px] px-12 right-[6%] top-[90px]"
+                            >
+                                <span className="text-lg font-semibold">Submit</span>
+                            </button>
+                
                         <ExamQuestion
                             questions={questions}
                             currentPage={meta.current_page}
@@ -122,17 +120,13 @@ export default function StudentExamView() {
                             reviewed={reviewed}
                             answeredQuestions={answeredQuestions}
                             setAnsweredQuestions={setAnsweredQuestions}
-                         
-        
-                            
-                         
                         />
 
                         <div className="flex justify-center gap-10 ">
                             <button
                                 onClick={(ev) => onClick(ev, meta.links[0])}
                                 type="button"
-                                className="shadow-sm text-gray-600 bg-gray-100 rounded-full relative w-[130px] overflow-auto py-2"
+                                className="shadow-sm text-gray-600 hover:border-gray-600 hover:border-solid hover:border-[1px] bg-gray-100 rounded-full relative w-[130px] overflow-auto py-2"
                             >
                                 <div className="absolute w-[30%] h-full left-0 top-0 rounded-full bg-[rgb(238,242,255)] flex justify-center">
                                     <ArrowLeftIcon className="w-5" />
@@ -147,19 +141,14 @@ export default function StudentExamView() {
                                     )
                                 }
                                 type="button"
-                                className="shadow-sm text-gray-600  bg-gray-100  rounded-full relative w-[130px] overflow-auto py-2 "
+                                className="shadow-sm text-gray-600 hover:border-gray-600 hover:border-solid hover:border-[1px] bg-gray-100  rounded-full relative w-[130px] overflow-auto py-2 "
                             >
                                 <p className="font-semibold pr-8"> Next</p>
-                                <div className="absolute w-[30%] h-full right-0 top-0 rounded-full bg-[rgb(238,242,255)] flex justify-center">
+                                <div className="absolute w-[30%] h-full right-0 top-0 rounded-full bg-[rgb(238,242,255)] flex justify-center ">
                                     <ArrowRightIcon className="w-5" />
                                 </div>
                             </button>
-                            <button
-                                type="submit"
-                                className="translate-x-32 text-white bg-purple-600 rounded-full relative w-[100px] overflow-auto py-2 "
-                            >
-                                submit
-                            </button>
+        
                         </div>
                     </div>
                 </div>

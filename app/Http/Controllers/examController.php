@@ -170,6 +170,7 @@ class examController extends Controller
                     }
                 
                     $imagePaths = $this->saveImage( $validatedData['image']);
+           
 
                     $validatedData['image'] = json_encode($imagePaths); 
                   
@@ -193,8 +194,21 @@ class examController extends Controller
                     'exam_id' => 'exists:App\Models\Exam,id',
                     'image' => 'nullable|array',
         ]);
+        $validatedData = $validator->validate();
+        if (isset( $validatedData['image'])) {
+            // Ensure $data['image'] is an array
+            if (!is_array(  $validatedData ['image'])) {
+                throw new \Exception('Image data must be an array');
+            }
+        
+            $imagePaths = $this->saveImage( $validatedData['image']);
+   
 
-        return $question->update($validator->validated());
+            $validatedData['image'] = json_encode($imagePaths); 
+          
+        }
+
+        return $question->update($validatedData );
     }
 
     public function getExams(Request $request){
