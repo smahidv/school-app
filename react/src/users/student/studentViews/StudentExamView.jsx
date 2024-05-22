@@ -14,6 +14,55 @@ export default function StudentExamView() {
     const [meta, setMeta] = useState({});
     const [reviewed, setReviewed] = useState({});
     const [answeredQuestions, setAnsweredQuestions] = useState([]);
+    const [answers, setAnswers] = useState({});
+   
+
+    const handleAnswerChange = (question_id, student_opt) => {
+        setAnswers((prevAnswers) => {
+            const currentAnswers = prevAnswers[question_id] || [];
+
+            let updatedAnswers;
+            if (currentAnswers.includes(student_opt)) {
+                updatedAnswers = currentAnswers.filter(
+                    (opt) => opt !== student_opt
+                );
+            } else {
+                updatedAnswers = [...currentAnswers, student_opt];
+            }
+
+   
+            setAnsweredQuestions((prevAnsweredQuestions) => {
+                const updatedAnsweredQuestions = [...prevAnsweredQuestions];
+                if (
+                    updatedAnswers.length > 0 &&
+                    !updatedAnsweredQuestions.includes(meta.current_page)
+                ) {
+                    updatedAnsweredQuestions.push(meta.current_page);
+                } else if (
+                    updatedAnswers.length === 0 &&
+                    updatedAnsweredQuestions.includes(meta.current_page)
+                ) {
+                    return updatedAnsweredQuestions.filter(
+                        (page) => page !== meta.current_page
+                    );
+                }
+
+                return updatedAnsweredQuestions;
+            });
+
+            return {
+                ...prevAnswers,
+                [question_id]: updatedAnswers,
+            };
+        });
+    };
+
+
+
+
+
+
+
 
     function getExamQuestions(url) {
         url = url || `/getByExam/${id}`;
@@ -24,10 +73,10 @@ export default function StudentExamView() {
         });
     }
 
-    function handleReview(currentPage) {
+    function handleReview(current_page) {
         setReviewed((prevState) => ({
             ...prevState,
-            [currentPage]: !prevState[currentPage],
+            [current_page]: !prevState[current_page],
         }));
     }
 
@@ -70,7 +119,6 @@ export default function StudentExamView() {
                     <QuestionPagination
                         teacher={exam.teacher}
                         meta={meta}
-                        onPageClick={onPageClick}
                         onClick={onClick}
                         reviewed={reviewed}
                         answeredQuestions={answeredQuestions}
@@ -115,11 +163,13 @@ export default function StudentExamView() {
                 
                         <ExamQuestion
                             questions={questions}
-                            currentPage={meta.current_page}
+                            current_page={meta.current_page}
                             handleReview={handleReview}
                             reviewed={reviewed}
-                            answeredQuestions={answeredQuestions}
-                            setAnsweredQuestions={setAnsweredQuestions}
+                            handleAnswerChange ={handleAnswerChange }
+                            answers={answers}
+    
+
                         />
 
                         <div className="flex justify-center gap-10 ">

@@ -1,56 +1,14 @@
-import React, { useState } from "react";
 
 export default function ExamQuestion({
     questions,
-    currentPage,
+    current_page,
     handleReview,
     reviewed,
-    answeredQuestions,
-    setAnsweredQuestions,
+    answers,
+    handleAnswerChange
 }) {
-    const [answers, setAnswers] = useState({});
+ 
 
-    const handleAnswerChange = (question_id, student_opt) => {
-        setAnswers((prevAnswers) => {
-            const currentAnswers = prevAnswers[question_id] || [];
-
-            let updatedAnswers;
-            if (currentAnswers.includes(student_opt)) {
-                updatedAnswers = currentAnswers.filter(
-                    (opt) => opt !== student_opt
-                );
-            } else {
-                updatedAnswers = [...currentAnswers, student_opt];
-            }
-
-            // Update answeredQuestions if necessary
-            setAnsweredQuestions((prevAnsweredQuestions) => {
-                const updatedAnsweredQuestions = [...prevAnsweredQuestions];
-                if (
-                    updatedAnswers.length > 0 &&
-                    !updatedAnsweredQuestions.includes(currentPage)
-                ) {
-                    updatedAnsweredQuestions.push(currentPage);
-                } else if (
-                    updatedAnswers.length === 0 &&
-                    updatedAnsweredQuestions.includes(currentPage)
-                ) {
-                    return updatedAnsweredQuestions.filter(
-                        (page) => page !== currentPage
-                    );
-                }
-
-                return updatedAnsweredQuestions;
-            });
-
-            return {
-                ...prevAnswers,
-                [question_id]: updatedAnswers,
-            };
-        });
-    };
-
-    console.log(answeredQuestions);
     return (
         <>
             {questions &&
@@ -60,11 +18,11 @@ export default function ExamQuestion({
                             <button
                                 type="button"
                                 className={`h-fit self-end border-gray-400 border-solid border-[1px] px-6 rounded-full ${
-                                    reviewed[currentPage]
+                                    reviewed[current_page]
                                         ? "bg-yellow-400 border-none shadow-md"
                                         : "bg-[rgb(238,242,255)]"
                                 }`}
-                                onClick={() => handleReview(currentPage)}
+                                onClick={() => handleReview(current_page)}
                             >
                                 <small className="text-gray-600">
                                     Mark as review
@@ -74,7 +32,7 @@ export default function ExamQuestion({
                         <div className="space-y-8 border-t-solid border-t-[1.5px] border-gray-400 w-[80dvw] mt-6 mb-10">
                             <div className="p-6 bg-gray-100 shadow-sm">
                                 <p className="font-bold text-gray-700">
-                                    Question {currentPage}
+                                    Question {current_page}
                                 </p>
                                 <p className="text-gray-950">
                                     {question.question}
@@ -110,7 +68,7 @@ export default function ExamQuestion({
                                                 answers[question.id]?.includes(
                                                     opt.option
                                                 ) || false;
-
+                                               
                                             return (
                                                 <div
                                                     key={i}
