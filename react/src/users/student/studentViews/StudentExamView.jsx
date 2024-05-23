@@ -17,8 +17,11 @@ export default function StudentExamView() {
     const [answers, setAnswers] = useState({});
    
 
+
     const handleAnswerChange = (question_id, student_opt) => {
+        
         setAnswers((prevAnswers) => {
+
             const currentAnswers = prevAnswers[question_id] || [];
 
             let updatedAnswers;
