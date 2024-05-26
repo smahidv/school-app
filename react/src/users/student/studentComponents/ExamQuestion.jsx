@@ -26,7 +26,7 @@ export default function ExamQuestion({
                                 onClick={() => handleReview(current_page)}
                             >
                                 <small className="text-gray-600">
-                                    Mark as review
+                                {reviewed[current_page] ? "Remove mark" : "Mark as review"}
                                 </small>
                             </button>
                         </div>
@@ -40,18 +40,17 @@ export default function ExamQuestion({
                                 </p>
                             </div>
                             <div
-                                className={`p-6 bg-gray-100 shadow-sm space-y-7 border-t-solid border-t-[1.5px] border-gray-400
-                             ${
-                                 question.images && question.images.length > 0 &&
-                                 "flex gap-20" 
-                             }`}
+                                className={`p-6 bg-gray-100  shadow-sm space-y-7 border-t-solid border-t-[1.5px] border-gray-400
+                                ${
+                                    question.image_url && question.image_url.length > 0 && question.type !== "text" ? "flex gap-20" : ""
+                                }`}
                             >
-                                {question.images && question.images.length > 0 &&(
-                                    <div className="grid gap-6">
-                                        {question.images.map(
+                                {question.image_url && question.image_url.length > 0 &&(
+                                    <div className={`grid gap-6 ${question.type ==="text" ? "grid-flow-col" : ""}`}>
+                                        {question.image_url.map(
                                             (imageUrl, index) => (
                                                 <img
-                                                    className="aspect-square"
+                                                    className="aspect-square max-w-[500px]"
                                                     key={index}
                                                     src={imageUrl}
                                                     alt=""
@@ -61,9 +60,11 @@ export default function ExamQuestion({
                                     </div>
                                 )}
                                 <div
-                                    className={` ${ question.images && "space-y-6" } `}
+                                    className="space-y-6  "
                                 >
+                                    
                                       <QuestionOptions handleAnswerChange={handleAnswerChange} answers={answers} question={question}/>
+                                     
                                 </div>
                             </div>
                         </div>

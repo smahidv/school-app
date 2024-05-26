@@ -6,10 +6,11 @@ use App\Enums\QuestionTypeEnum;
 use App\Http\Requests\StoreExamRequest;
 use App\Http\Resources\ExamQuestionResource;
 use App\Http\Resources\ExamResource;
+use App\Http\Resources\ExamsForStudentRessources;
+use App\Http\Resources\ExamsForTeacheRessources;
 use App\Http\Resources\ExamWithQuestionsResource;
 use App\Models\Exam;
 use App\Models\ExamQuestions;
-use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
@@ -47,21 +48,17 @@ class examController extends Controller
         $validated = $request->validated();
         
        
-        $enableDate = Carbon::parse($validated['enable_date']);
-        $expireDate = Carbon::parse($validated['expire_date']);
-        $duration = $expireDate->diffInMinutes($enableDate);
-    
-       
-        $status = $this->examStatus($expireDate);
+  
+
 
         $exam = Exam::create([
             'user_id' => auth()->id(),
-            'status' => $status,
+     
             'description' => $validated['description'],
             'module_id' => $validated['module_id'],
-            'duration' => $duration,
-            'enable_date' => $enableDate,
-            'expire_date' => $expireDate,
+        
+            'enable_date' => $validated['enable_date'],
+            'expire_date' => $validated['expire_date'],
             'semester' => $validated['semester'],
         ]);
 
@@ -74,7 +71,7 @@ class examController extends Controller
             $this->createQuestion($questionData, $exam->id);
             
         }
-    //    dd($exam->image);
+    
         return new ExamResource($exam);
     }
     
@@ -87,10 +84,12 @@ class examController extends Controller
     {
    
         $user = $request->user();
+        
         if ($user->id !== $exam->user_id) {
             return abort(403, 'Unauthorized action');
         }
         return new ExamWithQuestionsResource($exam);
+   
     }
 
     /**
@@ -216,18 +215,56 @@ class examController extends Controller
       
         $moduleId = $request["moduleId"];
         $classRoomId = $request["classRoomId"];
-        $exams = Module::findOrFail($moduleId)
-            ->exams()
-            ->join('exams_class_rooms', 'exams_class_rooms.exam_id', '=', 'exams.id')
-            ->join('modules', 'modules.id', '=', 'exams.module_id')
-            ->where('exams_class_rooms.class_room_id', $classRoomId)
-            ->distinct()
-            ->get();
+        $exams =Exam::with('module', 'classes','user')
+        ->where('module_id', $moduleId)
+        ->whereHas('classes', function ($query) use ($classRoomId) {
+            $query->where('class_rooms.id', $classRoomId);
+        })
+        ->get();
 
+        foreach ($exams as $exam) {
+            $status = $this->examStatus(Carbon::parse($exam->expire_date), Carbon::parse($exam->enable_date));
+            $duration = Carbon::parse($exam->expire_date)->diffInSeconds(Carbon::parse($exam->enable_date));
     
-    
-        return json_encode($exams);
+            // Add status and duration to exam data
+            $exam->status = $status;
+            $exam->duration = $duration;
+        }
+
+          return  ExamsForStudentRessources::collection( $exams)->response();
     }
+
+
+
+    public function getExamsForTeachers(Request $request)
+    {
+        $moduleId = $request->input('moduleId');
+        $classRoomId = $request->input('classRoomId');
+       
+    
+        $exams = Exam::with('module', 'classes')
+                    ->where('module_id', $moduleId)
+                    ->whereHas('classes', function ($query) use ($classRoomId) {
+                        $query->where('class_rooms.id', $classRoomId);
+                    })
+                    ->get();
+
+                    foreach ($exams as $exam) {
+                        $status = $this->examStatus(Carbon::parse($exam->expire_date), Carbon::parse($exam->enable_date));
+                        $duration = Carbon::parse($exam->expire_date)->diffInSeconds(Carbon::parse($exam->enable_date));
+                
+                        // Add status and duration to exam data
+                        $exam->status = $status;
+                        $exam->duration = $duration;
+                
+
+                       
+                    }
+            
+        return  ExamsForTeacheRessources::collection( $exams)->response();
+    }
+    
+
    
     public function getByExam(Exam $exam)
     {
@@ -243,6 +280,7 @@ class examController extends Controller
     }
 
 
+  
     private function saveImage($images)
 {
     $relativePaths = [];
@@ -285,10 +323,18 @@ class examController extends Controller
 }
 
 
-    private function examStatus(Carbon $expireDate)
-    {
-        return now()->lte($expireDate) ? 'ongoing' : 'finished';
+private function examStatus(Carbon $expireDate, Carbon $enableDate)
+{
+    $now = now();
+    
+    if ($now->gt($expireDate)) {
+        return 'Finished';
+    } elseif ($now->lt($enableDate)) {
+        return 'Upcoming';
+    } elseif ($enableDate->lte($now)) {
+        return 'Ongoing';
     }
+}
 
 
 }

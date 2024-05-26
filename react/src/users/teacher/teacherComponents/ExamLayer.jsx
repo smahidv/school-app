@@ -2,23 +2,17 @@ import React from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ReactSelect from "../../../core/ReactSelect";
 import axiosClient from "../../../axios";
+import { useNavigate } from "react-router-dom";
 
-export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
-    const handleInputChange = (e, field) => {
-        setExam({ ...exam, [field]: e.target.value });
-    };
-
-    const handleClassSelect = (selectedOptions) => {
-        const selectedValues = selectedOptions.map((option) => option.id);
-        setExam({ ...exam, class_room_id: selectedValues });
-    };
-
-    const handleModuleSelect = (selectedOption) => {
-        setExam({ ...exam, module_id: selectedOption.id });
-        console.log(selectedOption);
-        //  exemple {value: 'anglais', label: 'anglais', id: 9}
-    };
-
+export default function ExamLayer({
+    toggleExamLayer,
+    exam,
+    handleInputChange,
+    handleClassSelect,
+    handleModuleSelect,
+    id,
+}) {
+    const navigate = useNavigate();
     const dateTimeLocalKnow = new Date(
         new Date().getTime() - new Date().getTimezoneOffset() * 60_000
     )
@@ -28,22 +22,27 @@ export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
     const onSubmit = (ev) => {
         ev.preventDefault();
 
-        
-
         const payload = { ...exam };
-        payload.questions.forEach(question => {
-
-            if (Array.isArray(question.image_url) && question.image_url.length > 0) {
-              question.image = question.image_url;
+        payload.questions.forEach((question) => {
+            if (
+                Array.isArray(question.image_url) &&
+                question.image_url.length > 0
+            ) {
+                question.image = question.image_url;
             }
 
             delete question.image_url;
-          });
+        });
+        let res = null;
+        if (id) {
 
-        axiosClient
-            .post("/exam", payload)
-            .then((res) => {
-                window.location.reload();
+            res = axiosClient.put(`/exam/${id}`, payload);
+        } else {
+            res = axiosClient.post("/exam", payload)
+        }
+
+            res.then((res) => {
+                navigate("/t/c");
             })
             .catch((err) => {
                 if (err && err.response) {
@@ -54,6 +53,7 @@ export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
 
     return (
         <form action="#" method="POST" onSubmit={onSubmit}>
+
             <div className="absolute bg-white z-50 [box-shadow:0_0_0_9999px_#000000b0]  shadow-sm rounded-sm  left-[50%] top-[10%] bottom-10 translate-x-[-50%] overflow-y-scroll  ">
                 {/* <pre>{JSON.stringify(exam, undefined, 2)}</pre>  */}
 
@@ -86,7 +86,7 @@ export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
                                 </label>
 
                                 <select
-                                    className="mt-1 block outline-none p-[.3em] bg-[rgb(247,246,251)]"
+                                    className="mt-1 block outline-none p-[.3em] bg-[rgb(247,246,251)] w-full"
                                     onChange={(e) =>
                                         handleInputChange(e, "semester")
                                     }
@@ -160,9 +160,9 @@ export default function ExamLayer({ toggleExamLayer, exam, setExam }) {
 
                     <button
                         type="submit"
-                        className="mt-10 bg-[rgb(96,209,83)] py-[2px] px-7 rounded-sm text-white ml-auto font-semibold "
+                        className="mt-10 bg-[rgb(96,209,83)] py-1 px-7 rounded-sm text-white ml-auto font-semibold "
                     >
-                        Submit
+                        {!id ? "Submit" : "Update"}
                     </button>
                 </div>
             </div>

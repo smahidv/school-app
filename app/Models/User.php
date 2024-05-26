@@ -52,6 +52,11 @@ public function modules()
 {
     return $this->hasMany(Module::class,'user_id');
 }
+public function exams()
+{
+    return $this->hasMany(Exam::class,'user_id');
+}
+
 
     /**
      * The attributes that should be hidden for serialization.

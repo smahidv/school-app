@@ -6,11 +6,14 @@ import {
 import QuestionAside from "../teacherComponents/QuestionAside";
 import QuestionEditor from "../teacherComponents/QuestionEditor";
 import ExamLayer from "../teacherComponents/ExamLayer";
+import { Link, useParams } from "react-router-dom";
+import axiosClient from "../../../axios";
 
 
-export default function ExamView({ toggleEditor }) {
-   
+export default function ExamView() {
+    const { id } = useParams();
     const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     const showQuestion = (index) => {
         setSelectedQuestionIndex(index);
@@ -57,6 +60,21 @@ export default function ExamView({ toggleEditor }) {
  
          }
      );
+
+     const handleInputChange = (e, field) => {
+        setExam({ ...exam, [field]: e.target.value });
+    };
+
+    const handleClassSelect = (selectedOptions) => {
+        const selectedValues = selectedOptions.map((option) => option.id);
+        setExam({ ...exam, class_room_id: selectedValues });
+    };
+
+    const handleModuleSelect = (selectedOption) => {
+        setExam({ ...exam, module_id: selectedOption.id });
+        console.log(selectedOption);
+        //  exemple {value: 'anglais', label: 'anglais', id: 9}
+    };
      useEffect(() => {
        
         setExam((prevExam) => ({
@@ -65,7 +83,17 @@ export default function ExamView({ toggleEditor }) {
         }));
     }, [questions]);
 
-
+    useEffect(() => {
+        if (id) {
+            setLoading(true);
+            axiosClient.get(`/exam/${id}`).then(({ data }) => {
+                setExam(data.data);
+                setQuestions(data.data.questions);
+                setLoading(false);
+                
+            });
+        }
+    }, []);
 
 
     const addQuestion = () => {
@@ -97,29 +125,43 @@ export default function ExamView({ toggleEditor }) {
 
     return (
         <>
-            {examLayer && <ExamLayer exam={exam}  setExam={setExam} toggleExamLayer={toggleExamLayer} />}
-
-            <div
-                className={`bg-white absolute w-full min-h-screen top-0 z-30   ${
+            {examLayer && <ExamLayer
+             exam={exam}  
+             handleModuleSelect={handleModuleSelect}
+             handleClassSelect={handleClassSelect}
+             toggleExamLayer={toggleExamLayer}
+             handleInputChange={handleInputChange} 
+             id={id}
+             />}
+            {loading ? (
+                           
+                                                    <div className="flex justify-center items-center my-5 text-gray-900 text-xl animate-pulse">
+                                                        <span>loading...</span>
+                                                    </div>
+                                      
+                                        )
+           : (<div
+                className={`  min-h-screen   ${
                     examLayer && "pointer-events-none overflow-hidden"
                 }`}
             >
-                <pre>{JSON.stringify(exam, undefined, 2)}</pre>
-                <div className="p-4 flex gap-3 items-center border-solid border-b-[#e5dfdf] border-b-[1px] ">
-                    <button onClick={toggleEditor}>
+                {/* <pre>{JSON.stringify(exam, undefined, 2)}</pre>  */}
+           
+                <div className="p-6 pr-10  flex gap-3 items-center border-solid border-b-[#e5dfdf] border-b-[1px] ">
+                    <Link to="/t/" >
                         <ArrowLongLeftIcon className="text-gray-600 w-6" />
-                    </button>
-                    <div className="text-lg">Questions</div>
+                    </Link>
+                    <div className="text-xl">Questions</div>
                     <button
                         onClick={toggleExamLayer}
-                        className="flex gap-2 items-center bg-[rgb(96,209,83)] py-[2px] px-7 rounded-sm text-white ml-auto font-semibold "
+                        className="flex gap-2 items-center bg-[rgb(96,209,83)] py-2 px-7 rounded-sm text-white ml-auto font-semibold "
                     >
                         Next
                         <ArrowLongRightIcon className="w-6 " />
                     </button>
                 </div>
                 
-                <div className="grid py-8 px-4 grid-cols-[20%_80%] bg-[#f8f9fa]  min-h-screen ">
+                <div className="grid py-8 px-4 grid-cols-[20%_78%] bg-[#f8f9fa]  min-h-screen gap-9">
                  
 
                     <QuestionAside
@@ -137,7 +179,7 @@ export default function ExamView({ toggleEditor }) {
                         selectedQuestionIndex={selectedQuestionIndex}
                     />
                 </div>
-            </div>
+            </div>)}
         </>
     );
 }

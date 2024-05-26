@@ -11,6 +11,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "react-blurhash": "^0.3.0",
+        "react-lazy-load-image-component": "^1.6.0",
         "uuidv4": "^6.2.13"
     }
 }

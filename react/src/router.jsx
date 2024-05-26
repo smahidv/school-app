@@ -21,6 +21,7 @@ import TeacherPeaple from "./users/teacher/teacherviews/TeacherPeaple";
 import StudentSubject from "./users/student/studentViews/StudentSubject";
 import StudentExamView from "./users/student/studentViews/StudentExamView";
 import AdminTeacherForm from "./users/admin/adminViews/AdminTeacherForm";
+import ExamView from "./users/teacher/teacherviews/ExamView";
 
 const router = createBrowserRouter([
     {
@@ -99,13 +100,21 @@ const router = createBrowserRouter([
                 element: <TeacherDashboard />,
             },
             {
+                path: "/t/exam",
+                element: <ExamView />,
+            },
+            {
+                path: "/t/exam/:id",
+                element: <ExamView />,
+            },
+            {
                 path: "/t/c",
                 element: <TeacherClass />,
                 children: [
                     {
                         path: "/t/c/:classId/:moduleId",
                         element: <TeacherExams />,
-                    },
+                    },                 
                     {
                         path: "/t/c/p",
                         element: <TeacherPeaple />,

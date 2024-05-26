@@ -5,6 +5,7 @@ import axiosClient from "../../../axios";
 import ExamQuestion from "../studentComponents/ExamQuestion";
 import QuestionPagination from "../studentComponents/QuestionPagination";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
+import WarninglayeReviewed from "../studentComponents/WarninglayeReviewed";
 
 export default function StudentExamView() {
     const { id } = useParams();
@@ -15,23 +16,30 @@ export default function StudentExamView() {
     const [reviewed, setReviewed] = useState({});
     const [answeredQuestions, setAnsweredQuestions] = useState([]);
     const [answers, setAnswers] = useState({});
+    const [showWarning, setshowWarning] = useState(false);
    
 
 
-    const handleAnswerChange = (question_id, student_opt) => {
+    const handleAnswerChange = (question_id, student_opt,isRadio) => {
         
         setAnswers((prevAnswers) => {
-
-            const currentAnswers = prevAnswers[question_id] || [];
-
             let updatedAnswers;
-            if (currentAnswers.includes(student_opt)) {
-                updatedAnswers = currentAnswers.filter(
-                    (opt) => opt !== student_opt
-                );
+    
+            if (isRadio) {
+                // If it's a radio button, we set the answer to the selected option.
+                updatedAnswers = [student_opt];
             } else {
-                updatedAnswers = [...currentAnswers, student_opt];
+                // Otherwise, handle it as a checkbox.
+                const currentAnswers = prevAnswers[question_id] || [];
+                if (currentAnswers.includes(student_opt)) {
+                    updatedAnswers = currentAnswers.filter(
+                        (opt) => opt !== student_opt
+                    );
+                } else {
+                    updatedAnswers = [...currentAnswers, student_opt];
+                }
             }
+    
 
    
             setAnsweredQuestions((prevAnsweredQuestions) => {
@@ -59,12 +67,6 @@ export default function StudentExamView() {
             };
         });
     };
-
-
-
-
-
-
 
 
     function getExamQuestions(url) {
@@ -115,9 +117,36 @@ export default function StudentExamView() {
         getExamQuestions();
     }, []);
 
+    const verifyReviewd = (reviewed) => {
+     return Object.keys(reviewed).map(function(key) {
+        if( reviewed[key] ){
+            getExamQuestions(`/getByExam/${id}?page=${key}`)
+           setshowWarning(true);              
+        }
+       
+        });
+      
+      }
+
+    const onSubmit=(e)=>{
+       e.preventDefault(); 
+       if(reviewed)
+{   verifyReviewd(reviewed);}
+
+      
+    }
+
+    function toggleWarning(){
+        setshowWarning(!showWarning)
+    }
+
+   
+
     return userToken && currentUser.role === 3 ? (
         <>
+        {showWarning && <WarninglayeReviewed toggleWarning={toggleWarning} />}
             {questions ? (
+                   <form action="#" method="post " onSubmit={onSubmit} >
                 <div className="flex  min-h-[100dvh]  ">
                     <QuestionPagination
                         teacher={exam.teacher}
@@ -134,7 +163,7 @@ export default function StudentExamView() {
                                     {exam.module}
                                 </p>
                                 <small className="capitalize text-gray-500 font-semibold">
-                                    {exam.semestre}
+                                    {exam.semester}
                                 </small>
                             </div>
 
@@ -159,7 +188,7 @@ export default function StudentExamView() {
                         </div>
                         <button
                                 type="submit"
-                                className=" text-white absolute bg-purple-600 rounded-full  py-[4px] px-12 right-[6%] top-[90px]"
+                                className=" text-white absolute bg-purple-600 hover:bg-purple-900 focus:ring-2 focus:outline-none focus:ring-purple-300  rounded-full  py-[4px] px-12 right-[6%] top-[90px]"
                             >
                                 <span className="text-lg font-semibold">Submit</span>
                             </button>
@@ -179,7 +208,7 @@ export default function StudentExamView() {
                             <button
                                 onClick={(ev) => onClick(ev, meta.links[0])}
                                 type="button"
-                                className="shadow-sm text-gray-600 hover:border-gray-600 hover:border-solid hover:border-[1px] bg-gray-100 rounded-full relative w-[130px] overflow-auto py-2"
+                                className="shadow-sm text-gray-600 hover:outline-gray-600 hover:outline hover:outline-solid hover:outline-[1.5px] bg-gray-100 rounded-full relative w-[130px] overflow-auto py-2"
                             >
                                 <div className="absolute w-[30%] h-full left-0 top-0 rounded-full bg-[rgb(238,242,255)] flex justify-center">
                                     <ArrowLeftIcon className="w-5" />
@@ -194,7 +223,7 @@ export default function StudentExamView() {
                                     )
                                 }
                                 type="button"
-                                className="shadow-sm text-gray-600 hover:border-gray-600 hover:border-solid hover:border-[1px] bg-gray-100  rounded-full relative w-[130px] overflow-auto py-2 "
+                                className="shadow-sm text-gray-600 hover:outline-gray-600 hover:outline hover:outline-solid hover:outline-[1.5px] bg-gray-100  rounded-full relative w-[130px] overflow-auto py-2 "
                             >
                                 <p className="font-semibold pr-8"> Next</p>
                                 <div className="absolute w-[30%] h-full right-0 top-0 rounded-full bg-[rgb(238,242,255)] flex justify-center ">
@@ -205,6 +234,7 @@ export default function StudentExamView() {
                         </div>
                     </div>
                 </div>
+                </form>
             ) : (
                 <div className="flex space-x-2 justify-center items-center bg-white h-screen dark:invert">
                     <span className="sr-only">Loading...</span>

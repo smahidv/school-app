@@ -21,9 +21,6 @@ export default function ReactSelect({ isMulti, endpoint, onChange ,value}) {
             options={options} //the entire list of options
             isMulti={isMulti}
             value={value}
-       
-       
-
         />
     );
 }

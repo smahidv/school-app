@@ -17,12 +17,12 @@ class ExamQuestionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'images' => $this->formatImages($this->image),
+            'image_url' => $this->formatImages($this->image),
             'type' => $this->type,
             'question' => $this->question,
             'score' => $this->score,
             'description' => $this->description,
-            'options' => json_decode($this->data)
+            'data' => json_decode($this->data)
         ];
 
         

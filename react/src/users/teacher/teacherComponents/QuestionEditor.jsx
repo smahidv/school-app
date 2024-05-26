@@ -106,8 +106,8 @@ export default function QuestionEditor({
                 </div>
             )}
             {selectedQuestion && (
-                <div>
-                    <div className="grid gap-8 mb-5 bg-white rounded-sm shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 relative  after:absolute after:w-full after:h-[1.5px] after:bg-gray-200 after:bottom-[50%] after:left-0">
+                <div className="pr-10 ">
+                    <div className="grid gap-8 mb-5  bg-white rounded-sm shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 relative  after:absolute after:w-full after:h-[1.5px] after:bg-gray-200 after:bottom-[50%] after:left-0">
                         <div className="w-full flex gap-2">
                             <span className="text-[rgb(96,131,255)] ">
                                 {selectedQuestionIndex + 1}.
@@ -165,7 +165,9 @@ export default function QuestionEditor({
                             {selectedQuestion.image_url &&
                                 selectedQuestion.image_url.map(
                                     (imageUrl, index) => (
-                                        <div className="group relative w-fit  hover:opacity-70">
+                                        <div 
+                                        key={index}
+                                        className="group relative w-fit  hover:opacity-70">
                                             <img
                                                 className="aspect-square"
                                                 key={index}

@@ -222,8 +222,7 @@ private function updateLevel(Level $level, $levelData)
         'name' => 'required|string',
         'field_id' => 'exists:App\Models\Field,id',
         'modules' => 'array', 
-        'modules.*.name' => 'required|unique:modules,name', 
-        
+      
         'classrooms' => 'array', 
     ]);
 

@@ -19,9 +19,10 @@ class ExamWithQuestionsResource extends JsonResource
             'teacher' => $this->user->first_name . ' ' . $this->user->last_name,
             'description'=>$this->description,
             'semester'=>$this->semester,
-            'status' => $this->status,
-            'duration' => $this->duration,
             'module' => $this->module->name,
+            'class' => $this->classes->map(function ($class) {
+                return $class['name'];
+            }),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
             'enable_date' => (new \DateTime($this->enable_date))->format('Y-m-d H:i:s'),
