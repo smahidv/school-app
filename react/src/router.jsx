@@ -22,6 +22,9 @@ import StudentSubject from "./users/student/studentViews/StudentSubject";
 import StudentExamView from "./users/student/studentViews/StudentExamView";
 import AdminTeacherForm from "./users/admin/adminViews/AdminTeacherForm";
 import ExamView from "./users/teacher/teacherviews/ExamView";
+import TeacherGradeLayout from "./users/teacher/teacherComponents/TeacherGradeLayout";
+import StudentWork from "./users/teacher/teacherComponents/StudentWork";
+import StudentsGrades from "./users/teacher/teacherComponents/StudentsGrades";
 
 const router = createBrowserRouter([
     {
@@ -118,6 +121,20 @@ const router = createBrowserRouter([
                     {
                         path: "/t/c/p",
                         element: <TeacherPeaple />,
+                    },
+                    {
+                        path: "/t/c/g",
+                        element: <TeacherGradeLayout />,
+                        children: [
+                            {
+                                path: "/t/c/g/studentWork",
+                                element: <StudentWork />,
+                            },
+                            {
+                                path: "/t/c/g/grading",
+                                element: <StudentsGrades />,
+                            },
+                        ]
                     },
                 ],
             },

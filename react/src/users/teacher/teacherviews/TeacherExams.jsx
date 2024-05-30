@@ -7,7 +7,7 @@ export default function ExamTable() {
     const [exams, setExams] = useState([]);
     const { classId, moduleId } = useParams();
     const [loading, setLoading] = useState(false);
-    
+    const { setClassModule, classModule } = useClassModuleContext();
 
     function getClassExams() {
         axiosClient
@@ -23,6 +23,10 @@ export default function ExamTable() {
     }
 
     useEffect(() => {
+        setClassModule({
+            class_name: classItem.class_name,
+            module_name: classItem.module_name,
+        });
         setLoading(true);
         getClassExams();
     }, []);
@@ -38,7 +42,7 @@ export default function ExamTable() {
                             </span>
                             {exams.length > 0 && (
                                 <span className="mt-1 font-medium text-secondary-dark text-lg/normal">
-                                    All exams from 
+                                    All exams from
                                     <span className="font-semibold text-primary underline mx-3 cursor-pointer">
                                         {exams[0].class}
                                     </span>
@@ -55,6 +59,10 @@ export default function ExamTable() {
                                     <thead className="align-bottom">
                                         <tr className="font-semibold text-[0.95rem] text-secondary-dark">
                                             <th className="pb-3 text-start max-w-[10px]"></th>
+                                            <th className="pb-3 text-start max-w-[10px]">
+                                                ID
+                                            </th>
+
                                             <th className="pb-3 text-start min-w-[175px]">
                                                 FROM
                                             </th>
@@ -75,7 +83,10 @@ export default function ExamTable() {
                                     <tbody>
                                         {loading && (
                                             <tr>
-                                                <td colSpan="6" className="text-center">
+                                                <td
+                                                    colSpan="6"
+                                                    className="text-center"
+                                                >
                                                     <div className="flex justify-center items-center my-5 text-gray-900 text-xl animate-pulse">
                                                         <span>loading...</span>
                                                     </div>
@@ -91,9 +102,13 @@ export default function ExamTable() {
                                                     <td className="p-3 pl-0">
                                                         <NavLink
                                                             to={`/t/exam/${exam.exam_id}`}
-                                                            className="font-semibold text-light-inverse text-md/normal">
+                                                            className="font-semibold text-light-inverse text-md/normal"
+                                                        >
                                                             <PencilIcon className="w-4" />
                                                         </NavLink>
+                                                    </td>
+                                                    <td className="p-3 pl-0 font-bold text-light-inverse text-md/normal underline">
+                                                        {exam.exam_id}
                                                     </td>
                                                     <td className="p-3 pl-0">
                                                         <span className="font-semibold text-light-inverse text-md/normal">
@@ -113,11 +128,14 @@ export default function ExamTable() {
                                                     <td className="p-3 pr-0 text-end">
                                                         <span
                                                             className={`text-center align-baseline inline-flex px-4 py-3 mr-auto items-center font-semibold text-[.95rem] leading-none rounded-lg ${
-                                                                exam.status === "Ongoing"
+                                                                exam.status ===
+                                                                "Ongoing"
                                                                     ? "text-primary bg-primary-light"
-                                                                    : exam.status === "Finished"
+                                                                    : exam.status ===
+                                                                      "Finished"
                                                                     ? "text-danger bg-danger-light"
-                                                                    : exam.status === "Upcoming"
+                                                                    : exam.status ===
+                                                                      "Upcoming"
                                                                     ? "text-success bg-success-light"
                                                                     : ""
                                                             }`}
@@ -148,7 +166,10 @@ export default function ExamTable() {
                                             ))
                                         ) : !loading ? (
                                             <tr>
-                                                <td colSpan="6" className="text-xl text-gray-700 flex justify-center mt-6">
+                                                <td
+                                                    colSpan="6"
+                                                    className="text-xl text-gray-700 flex justify-center mt-6"
+                                                >
                                                     No exams created
                                                 </td>
                                             </tr>

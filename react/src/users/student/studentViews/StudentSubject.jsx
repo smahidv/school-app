@@ -130,7 +130,10 @@ export default function StudentSubject() {
                                 }`}
                             >
                                 {e.status === "Ongoing" ? (
-                                    <NavLink to={`/exam/${e.exam_id}`}>
+                                    <NavLink
+                                     to={`/exam/${e.exam_id}`}
+                                     target="_blank"
+                                     >
                                         <span className="font-semibold">
                                             Take the Exam
                                         </span>

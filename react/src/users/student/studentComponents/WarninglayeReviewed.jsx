@@ -1,7 +1,7 @@
-import { XMarkIcon } from "@heroicons/react/20/solid";
+
 import React from "react";
 
-export default function WarninglayeReviewed({ toggleWarning }) {
+export default function WarninglayeReviewed({ toggleWarning,onSubmit }) {
     return (
         <div className="absolute  z-40 [box-shadow:0_0_0_9999px_#000000b0] translate-x-[-50%] left-[50%] top-[20%]">
             <div className="relative bg-white rounded-lg shadow p-7">
@@ -48,8 +48,9 @@ export default function WarninglayeReviewed({ toggleWarning }) {
                         You have some questions left to review.
                     </h3>
                     <button
+                         type="submit"
                         data-modal-hide="popup-modal"
-                        type="button"
+                        onClick={onSubmit}
                         className="text-white bg-purple-600 hover:bg-purple-900 focus:ring-4 focus:outline-none focus:ring-purple-300  font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
                     >
                         submit Anyway

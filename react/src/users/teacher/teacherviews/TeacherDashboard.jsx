@@ -10,6 +10,8 @@ import NotepadTheme from "../../../images/notepad-set-square.jpg";
 import LaboratorTheme from "../../../images/still-life-laboratory-samples.jpg";
 import MicroscopeTheme from "../../../images/microscope-school-items-frame.jpg";
 import { useClassModuleContext } from "../../../contexts/FindExamByClassModuleProvider";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 export default function TeacherDashboard() {
     const [teacherClassroom, setTeacherClassroom] = useState([]);
@@ -40,17 +42,13 @@ export default function TeacherDashboard() {
             module_name: classItem.module_name,
         });
     
-      
-
-   
-       
     }
 
     useEffect(() => {
-        setClassModule({
-            class_name:null ,
-            module_name:null ,
-        });
+        // setClassModule({
+        //     class_name:null ,
+        //     module_name:null ,
+        // });
         setLoading(true);
         getClasses();
     }, []);
@@ -97,10 +95,12 @@ export default function TeacherDashboard() {
                                 className="border-solid border-gray-200 border-[1px] rounded-md max-w-[300px]"
                             >
                                 <div className="relative">
-                                    <img
+                                    <LazyLoadImage
                                         src={themes[i % themes.length]}
                                         alt={`${classItem.class_name} theme`}
                                         className="w-full h-[250px] object-cover rounded-md"
+                                        effect="blur"
+                                        
                                     />
                                     <div className="absolute bottom-0 left-0 p-4 bg-white bg-opacity-70 w-full rounded-b-md">
                                         <p className="text-xl font-bold text-gray-900 hover:underline">

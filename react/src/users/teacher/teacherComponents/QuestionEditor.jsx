@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function QuestionEditor({
@@ -6,6 +6,9 @@ export default function QuestionEditor({
     selectedQuestionIndex,
     setQuestions,
 }) {
+  
+    const [showAnswers, setshowAnswers] = useState(false);
+
     const selectedQuestion = questions[selectedQuestionIndex];
 
     const handleInputChange = (e, field) => {
@@ -65,6 +68,32 @@ export default function QuestionEditor({
         setQuestions(updatedQuestions);
     };
 
+    const hadleCorrectAnswerChange = (e, value) => {
+        const isChecked = e.target.checked;
+        let updatedCorrectOptions = [...selectedQuestion.correct_option];
+
+        if (isChecked) {
+            // If the option is checked, add it to the correct options array if it doesn't already exist
+            if (!updatedCorrectOptions.includes(value)) {
+                updatedCorrectOptions.push(value);
+            }
+        } else {
+            // If the option is unchecked, remove it from the correct options array
+            updatedCorrectOptions = updatedCorrectOptions.filter(
+                (option) => option !== value
+            );
+        }
+
+        const updatedQuestion = {
+            ...selectedQuestion,
+            correct_option: updatedCorrectOptions,
+        };
+
+        const updatedQuestions = [...questions];
+        updatedQuestions[selectedQuestionIndex] = updatedQuestion;
+        setQuestions(updatedQuestions);
+    };
+
     const addOption = () => {
         const updatedQuestions = questions.map((question, index) => {
             if (index === selectedQuestionIndex) {
@@ -82,17 +111,19 @@ export default function QuestionEditor({
     const deleteOption = (index) => {
         const updatedQuestions = questions.map((question, qIndex) => {
             if (qIndex === selectedQuestionIndex) {
+                const optionToDelete = question.data[index].option;
                 return {
                     ...question,
                     data: question.data.filter((_, oIndex) => oIndex !== index),
+                    correct_option: question.correct_option.filter((opt) => opt !== optionToDelete),
                 };
             }
             return question;
         });
-
+    
         setQuestions(updatedQuestions);
     };
-
+    
     function shouldHaveOptions(type = null) {
         type = type || selectedQuestion.type;
         return ["radio", "checkbox"].includes(type);
@@ -165,9 +196,10 @@ export default function QuestionEditor({
                             {selectedQuestion.image_url &&
                                 selectedQuestion.image_url.map(
                                     (imageUrl, index) => (
-                                        <div 
-                                        key={index}
-                                        className="group relative w-fit  hover:opacity-70">
+                                        <div
+                                            key={index}
+                                            className="group relative w-fit  hover:opacity-70"
+                                        >
                                             <img
                                                 className="aspect-square"
                                                 key={index}
@@ -215,18 +247,16 @@ export default function QuestionEditor({
 
                     {/* /////////////////////////////////////////options/////////////////////////////////////////// */}
 
-                    {shouldHaveOptions() && (
+                    {shouldHaveOptions() && !showAnswers && (
                         <>
                             <div className="my-4">
                                 {selectedQuestion.data &&
-                                    selectedQuestion.data &&
                                     selectedQuestion.data.length === 0 && (
                                         <div className="text-xs text-gray-600 text-center py-2">
                                             You don't have any options defined
                                         </div>
                                     )}
                                 {selectedQuestion.data &&
-                                    selectedQuestion.data &&
                                     selectedQuestion.data.length > 0 && (
                                         <div>
                                             {selectedQuestion.data.map(
@@ -236,13 +266,11 @@ export default function QuestionEditor({
                                                         className="flex gap-3 items-center mb-4"
                                                     >
                                                         <div
-                                                            className={`w-5 h-5 border-solid border-slate-400 border-[1.5px] 
-                                            ${
-                                                selectedQuestion.type ===
-                                                    "radio" && "rounded-full"
-                                            }
-                                                    `}
-                                                        ></div>
+                                                            className="w-5 h-5 border-solid border-slate-400 border-[1.5px]  ">
+                                                          
+                                                         
+                                                        </div>
+
                                                         <div className="text-[rgb(96,131,255)] font-semibold text-lg">
                                                             {String.fromCharCode(
                                                                 65 + index
@@ -277,6 +305,7 @@ export default function QuestionEditor({
                                         </div>
                                     )}
                             </div>
+
                             <div
                                 className="flex gap-3 items-center cursor-pointer"
                                 onClick={addOption}
@@ -295,7 +324,70 @@ export default function QuestionEditor({
                                     Add options
                                 </p>
                             </div>
+                            <div className="bg-white my-4 relative rounded-md w-fit">
+                                <span className="absolute h-full w-2 bg-green-500 top-0 rounded-md "></span>
+                                <div className="flex items-center py-3 px-6 gap-3">
+                                    <p className=" text-gray-700 font-semibold inline-block text-lg ">
+                                        For radio and checkbox question types
+                                        please select the correct answer.
+                                    </p>
+                                    <span
+                                        className=" px-2  text-success font-bold text-lg inline-block cursor-pointer underline hover:text-primary"
+                                        onClick={() =>
+                                            setshowAnswers(!showAnswers)
+                                        }
+                                    >
+                                        answer here
+                                    </span>
+                                </div>
+                            </div>
                         </>
+                    )}
+                    {showAnswers &&  selectedQuestion.type!=="text"  &&(
+                        <div className="my-4 py-6 space-y-1 bg-white rounded-md relative after:rounded-md after:absolute after:w-2 after:h-full after:bg-blue-400 after:top-0">
+
+                            {
+                                selectedQuestion.data.map(
+                                    (opt, i) => (
+                                 
+                                        <div 
+                                        key={i}
+                                        className="flex items-center gap-4 ml-8">
+                                      { opt["option"] && <input 
+                                            className="w-5 h-5 border-solid border-slate-400 border-[1.5px] text-green-500 focus:ring-0 "
+                                           type="checkbox"
+                                           checked={selectedQuestion.correct_option.includes(opt.option)}                                     
+                                              onChange={(e) =>
+                                            hadleCorrectAnswerChange(
+                                                e,
+                                                opt[
+                                                    "option"
+                                                ]
+                                            )
+                                        }
+                                        />}
+                                      <div
+                                          
+                                            className="text-xs text-gray-600 text-center py-2"
+                                        >
+                                            <p className="text-lg text-gray-700 font-semibold">{opt["option"]}</p>
+                                        </div>
+                                        </div>
+                                    )
+                                )
+                            }
+                            <div
+                            
+                            onClick={() => setshowAnswers(!showAnswers)}
+                            className="w-fit  ml-auto mx-10 outline outline-gray-200 hover:bg-blue-200 outline-1 px-4 py-1 focus:ring-1 cursor-pointer "
+                            >
+
+                               <span
+                              
+                                className="text-blue-500 text-lg font-semibold "> Done</span>
+    
+                            </div>
+                        </div>
                     )}
 
                     {/* /////////////////////////////////////////options/////////////////////////////////////////// */}

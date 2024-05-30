@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\examController;
@@ -52,6 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/teacher-classes', [FieldController::class, 'getClasses']);
         Route::get('TeacherClassModule', [ClassRoomController::class, 'getTeacherClass']);
         Route::get('/teacher-exams', [examController::class, 'getExamsForTeachers']);
+        // Route::post('/getAnswers', [AnswerController::class, 'getAnswers']);
 
 
     });
@@ -59,8 +61,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('student')->group(function () {
         Route::get('/dashboard', [moduleController::class, 'fetchDataModules']);   
-        Route::get('/getByExam/{exam:id}', [examController::class, 'getByExam']);
+        Route::get('/getByExam/{exam}', [examController::class, 'getByExam']);
         Route::get('/getExams', [examController::class, 'getExams']);
+        Route::post('/storeAnswer/{user}/{exam}', [AnswerController::class, 'storeAnswer']);
     });
 
 

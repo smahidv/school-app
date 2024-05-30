@@ -37,6 +37,7 @@ export default function ExamView() {
             score: 0,
             image: [],
             image_url: [],
+            correct_option:[],
             data: [
                   {
                    
@@ -105,6 +106,7 @@ export default function ExamView() {
             score: 0,
             image: [],
             image_url: [],
+            correct_option:[],
             data: [
                   {
                    
@@ -125,7 +127,8 @@ export default function ExamView() {
 
     return (
         <>
-            {examLayer && <ExamLayer
+            {examLayer && 
+            <ExamLayer
              exam={exam}  
              handleModuleSelect={handleModuleSelect}
              handleClassSelect={handleClassSelect}
@@ -145,7 +148,7 @@ export default function ExamView() {
                     examLayer && "pointer-events-none overflow-hidden"
                 }`}
             >
-                {/* <pre>{JSON.stringify(exam, undefined, 2)}</pre>  */}
+                <pre>{JSON.stringify(exam, undefined, 2)}</pre> 
            
                 <div className="p-6 pr-10  flex gap-3 items-center border-solid border-b-[#e5dfdf] border-b-[1px] ">
                     <Link to="/t/" >

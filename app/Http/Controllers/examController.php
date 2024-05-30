@@ -109,6 +109,7 @@ class examController extends Controller
         
 
         $data = $request->validated();
+ 
 
         $exam->update($data);
            
@@ -144,40 +145,56 @@ class examController extends Controller
     {
         //
     }
-
-    private function createQuestion($data,$examId)
+    private function createQuestion($data, $examId)
     {
+        // Ensure 'data' field is JSON-encoded if it's an array
         if (is_array($data['data'])) {
             $data['data'] = json_encode($data['data']);
         }
+        
+        // Validation rules
         $validator = Validator::make($data, [
-                    'question' => 'required|string',
-                    'type' => ['required', new Enum(QuestionTypeEnum::class)],
-                    'score' => 'required',
-                    'description' => 'nullable|string',
-                    'data' => 'present',
-                    'exam_id' => 'exists:App\Models\Exam,id',
-                    'image' => 'nullable|array',
-                ]);
-                $validatedData = $validator->validate();
-                $validatedData['exam_id'] = $examId;
-          
-                if (isset( $validatedData['image'])) {
-                    // Ensure $data['image'] is an array
-                    if (!is_array(  $validatedData ['image'])) {
-                        throw new \Exception('Image data must be an array');
-                    }
-                
-                    $imagePaths = $this->saveImage( $validatedData['image']);
-           
-
-                    $validatedData['image'] = json_encode($imagePaths); 
-                  
-                }
-         
-             
+            'question' => 'required|string',
+            'type' => ['required', new Enum(QuestionTypeEnum::class)],
+            'correct_option' => 'nullable|array',
+            'score' => 'required|numeric',
+            'description' => 'nullable|string',
+            'data' => 'present',
+            'exam_id' => 'exists:App\Models\Exam,id',
+            'image' => 'nullable|array',
+        ]);
+        
+        $validatedData = $validator->validate();
+        $validatedData['exam_id'] = $examId;
+        
+        // Handle images if present
+        if (isset($validatedData['image'])) {
+            // Ensure $data['image'] is an array
+            if (!is_array($validatedData['image'])) {
+                throw new \Exception('Image data must be an array');
+            }
+            
+            $imagePaths = $this->saveImage($validatedData['image']);
+            $validatedData['image'] = json_encode($imagePaths);
+        }
+        
+        // Handle the correct_option field
+        if ($validatedData['type'] == 'radio' || $validatedData['type'] == 'checkbox') {
+            // Ensure correct_option is set
+            if (isset($data['correct_option'])) {
+                $validatedData['correct_option'] = json_encode($data['correct_option']);
+            } else {
+                throw new \Exception('Correct option must be provided for radio and checkbox question types');
+            }
+        } else {
+            // Set correct_option to null for non-radio and non-checkbox question types
+            $validatedData['correct_option'] = null;
+        }
+        
+        // Create the question
         return ExamQuestions::create($validatedData);
     }
+    
 
     private function updateQuestion(ExamQuestions $question, $data)
     {
@@ -187,13 +204,16 @@ class examController extends Controller
         $validator = Validator::make($data, [
             'question' => 'required|string',
                     'type' => ['required', new Enum(QuestionTypeEnum::class)],
-                    'score' => 'required',
+                    'score' => 'required|numeric',
                     'description' => 'nullable|string',
+                    'correct_option'=>'nullable|array',
                     'data' => 'present',
                     'exam_id' => 'exists:App\Models\Exam,id',
                     'image' => 'nullable|array',
         ]);
+     
         $validatedData = $validator->validate();
+
         if (isset( $validatedData['image'])) {
             // Ensure $data['image'] is an array
             if (!is_array(  $validatedData ['image'])) {
@@ -206,7 +226,20 @@ class examController extends Controller
             $validatedData['image'] = json_encode($imagePaths); 
           
         }
-
+         // Handle the correct_option field
+         if ($validatedData['type'] == 'radio' || $validatedData['type'] == 'checkbox') {
+            // Ensure correct_option is set
+            if (isset($data['correct_option'])) {
+                $validatedData['correct_option'] = json_encode($data['correct_option']);
+            } else {
+                throw new \Exception('Correct option must be provided for radio and checkbox question types');
+            }
+        } else {
+            // Set correct_option to null for non-radio and non-checkbox question types
+            $validatedData['correct_option'] = null;
+        }
+  
+   
         return $question->update($validatedData );
     }
 
