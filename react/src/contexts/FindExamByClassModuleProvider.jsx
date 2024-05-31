@@ -1,14 +1,18 @@
 import React, { createContext, useContext, useState } from "react";
 
 export const moduleClassForExamContext = createContext(
-  {  classModule: {},
-    setClassModule: () => {},}
+  {  
+    classModule: {},
+    setClassModule: () => {},
+}
 );
 
 export default function FindExamByClassModuleProvider({ children }) {
     const [classModule, setClassModule] = useState({
+        class_id:null,
         class_name: "",
         module_name: "",
+        module_id:null,
     });
 
     return (

@@ -17,7 +17,7 @@ export default function TeacherDashboard() {
     const [teacherClassroom, setTeacherClassroom] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setClassModule, classModule } = useClassModuleContext();
-    console.log(classModule);
+
 
     const themes = [
         MicroscopeTheme,
@@ -36,19 +36,21 @@ export default function TeacherDashboard() {
         });
     }
 
-    function handleChoosenModuleClass(classItem) {
+    function handleChoosenModuleClass(item) {
         setClassModule({
-            class_name: classItem.class_name,
-            module_name: classItem.module_name,
+            class_name:item.class_name,
+            module_name: item.module_name,
+            class_id:item.class_id,
+            module_id:item.module_id
         });
     
     }
 
     useEffect(() => {
-        // setClassModule({
-        //     class_name:null ,
-        //     module_name:null ,
-        // });
+        setClassModule({
+            class_name:null ,
+            module_name:null ,
+        });
         setLoading(true);
         getClasses();
     }, []);

@@ -13,7 +13,7 @@ class AnswersStudent extends Model
     const CREATED_AT = null;
     const UPDATED_AT = null;
 
-    protected $fillable = ['user_id', 'exam_id'];
+    protected $fillable = ['student_id', 'exam_id'];
 
     public function exam()
     {

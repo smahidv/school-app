@@ -53,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/teacher-classes', [FieldController::class, 'getClasses']);
         Route::get('TeacherClassModule', [ClassRoomController::class, 'getTeacherClass']);
         Route::get('/teacher-exams', [examController::class, 'getExamsForTeachers']);
-        // Route::post('/getAnswers', [AnswerController::class, 'getAnswers']);
+        Route::get('/getAnswers', [AnswerController::class, 'getAnswers']);
 
 
     });

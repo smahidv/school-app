@@ -7,7 +7,6 @@ export default function ExamTable() {
     const [exams, setExams] = useState([]);
     const { classId, moduleId } = useParams();
     const [loading, setLoading] = useState(false);
-    const { setClassModule, classModule } = useClassModuleContext();
 
     function getClassExams() {
         axiosClient
@@ -23,10 +22,6 @@ export default function ExamTable() {
     }
 
     useEffect(() => {
-        setClassModule({
-            class_name: classItem.class_name,
-            module_name: classItem.module_name,
-        });
         setLoading(true);
         getClassExams();
     }, []);
