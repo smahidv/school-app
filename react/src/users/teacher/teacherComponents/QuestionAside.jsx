@@ -54,9 +54,11 @@ export default function QuestionAside({questions,selectedQuestionIndex,addQuesti
             questions.map((q, ind) => (
       
           <div key={ind}
+
         onClick={() => showQuestion(ind)}
         className={`flex cursor-pointer items-start gap-2 mt-3 py-1 pl-1  overflow-hidden ${
           selectedQuestionIndex === ind ? 'bg-[rgb(234,235,237)]' : ''
+          
       }`}>
           <span className='text-sm'>{ind + 1}.</span>
           <svg fill="none" className='min-w-5 max-w-5 w-5 ' viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg"><g fill="rgb(96,131,255)"><path d="m6.25 12c0-3.17564 2.57436-5.75 5.75-5.75 3.1756 0 5.75 2.57436 5.75 5.75 0 3.1756-2.5744 5.75-5.75 5.75-3.17564 0-5.75-2.5744-5.75-5.75z"/><path clipRule="evenodd" d="m12 1.25c-5.93706 0-10.75 4.81294-10.75 10.75 0 5.9371 4.81294 10.75 10.75 10.75 5.9371 0 10.75-4.8129 10.75-10.75 0-5.93706-4.8129-10.75-10.75-10.75zm-9.25 10.75c0-5.10863 4.14137-9.25 9.25-9.25 5.1086 0 9.25 4.14137 9.25 9.25 0 5.1086-4.1414 9.25-9.25 9.25-5.10863 0-9.25-4.1414-9.25-9.25z" fillRule="evenodd"/></g></svg>

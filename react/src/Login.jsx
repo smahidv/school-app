@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axiosClient from "./axios";
 import { useStateContext } from "./contexts/ContextProvider";
+import logo from "../src/images/Allinlab.png"
 
 export default function Login() {
     
@@ -56,7 +57,7 @@ export default function Login() {
                     <div>
                         <img
                             className="mx-auto h-12 w-auto"
-                            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                            src={logo}
                             alt="Your Company"
                         />
                     </div>
@@ -79,19 +80,19 @@ export default function Login() {
                         <div className="-space-y-px rounded-md shadow-sm">
                             <div>
                                 <label
-                                    htmlFor="matricule-address"
+                                    htmlFor="matricule"
                                     className="sr-only"
                                 >
                                     matricule address
                                 </label>
                                 <input
-                                    id="matricule-address"
+                                    id="matricule"
                                     name="matricule"
                                 
                                     autoComplete="matricule"
                                     required
                                     className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                    placeholder="matricule address"
+                                    placeholder="matricule"
                                     onChange={handleInput}
                                     value={loginInput.matricule}
                                 />
@@ -116,11 +117,11 @@ export default function Login() {
                         <div>
                             <button
                                 type="submit"
-                                className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                className="group relative flex w-full justify-center rounded-md border border-transparent bg-black py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                                     <LockClosedIcon
-                                        className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                                        className="h-5 w-5   group-hover:text-indigo-400"
                                         aria-hidden="true"
                                     />
                                 </span>

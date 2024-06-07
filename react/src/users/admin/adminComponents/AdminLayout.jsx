@@ -27,11 +27,7 @@ export default function AdminLayout() {
 
 
     const sideBar = [
-        {
-            name: "Dashboard",
-            link: "/",
-            icon: svgs.dashboard,
-        },
+
         {
             name: "Courses",
             link: "/admin/fields",
@@ -47,8 +43,7 @@ export default function AdminLayout() {
             link: "/admin/teachers",
             icon: svgs.teacher,
         },
-        { name: "Exams", link: "/admin/exams", icon: svgs.exam },
-        { name: "Grades", link: "/admin/grades", icon: svgs.grade },
+ 
     ];
     const currentNavItem = sideBar.find(
         (item) => item.link === location.pathname

@@ -16,7 +16,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 export default function TeacherDashboard() {
     const [teacherClassroom, setTeacherClassroom] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { setClassModule, classModule } = useClassModuleContext();
+    const { setClassModule} = useClassModuleContext();
 
 
     const themes = [

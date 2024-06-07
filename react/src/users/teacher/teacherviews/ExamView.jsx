@@ -18,6 +18,7 @@ export default function ExamView() {
     const showQuestion = (index) => {
         setSelectedQuestionIndex(index);
     };
+
     const handleDeleteQuestion = (index) => {
         const updatedQuestions = [...questions];
         updatedQuestions.splice(index, 1);
@@ -148,7 +149,7 @@ export default function ExamView() {
                     examLayer && "pointer-events-none overflow-hidden"
                 }`}
             >
-                <pre>{JSON.stringify(exam, undefined, 2)}</pre> 
+                {/* <pre>{JSON.stringify(exam, undefined, 2)}</pre>  */}
            
                 <div className="p-6 pr-10  flex gap-3 items-center border-solid border-b-[#e5dfdf] border-b-[1px] ">
                     <Link to="/t/" >
