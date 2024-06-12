@@ -26,7 +26,7 @@ export default function StudentSideNavigation() {
             </Link>
               <div onClick={logout}>
                 <svg
-                    className="w-6 text-white fill-current"
+                    className="w-6 text-white fill-current cursor-pointer"
                     viewBox="0 0 512.00533 512"
                     xmlns="http://www.w3.org/2000/svg"
                 >

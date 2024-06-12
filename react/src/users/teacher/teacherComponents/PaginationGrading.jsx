@@ -52,7 +52,7 @@ export default function PaginationGrading({ prevPage, nextPage,currentPage,Pagel
                         ></path>
                     </svg>
                 </span>
-            </button>
+            </button> 
         </div>
     );
 }

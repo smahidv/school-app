@@ -127,7 +127,7 @@ export default function StudentExamView() {
 
         if (reviewed) {
             verifyReviewd(reviewed);
-      
+  
             axiosClient
             .post(`/storeAnswer/${currentUser.id}/${id}`, {
                 answers

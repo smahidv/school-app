@@ -10,7 +10,7 @@ export default function StudentWork() {
     const [selectedStudentWorkIndex, setSelectedStudentWorkIndex] = useState(0);
     const [isWrong, setIsWrong] = useState({});
     const [questionScore, setQuestionScore] = useState({});
-    const [answertotalGrade,  setAnswertotalGrade] = useState({});
+    const [answertotalGrade, setAnswertotalGrade] = useState({});
 
     function nextStudentWork() {
         setSelectedStudentWorkIndex((prevState) => {
@@ -31,10 +31,9 @@ export default function StudentWork() {
             }
         });
     }
-    const studentWorkId = selectedExam.student_work[selectedStudentWorkIndex].student_work_id;
-
+    const studentWorkId =
+        selectedExam.student_work[selectedStudentWorkIndex].student_work_id;
     const handleGradeChange = (answerId, status, score) => {
-
         setIsWrong((prevState) => ({
             ...prevState,
             [answerId]: status,
@@ -53,62 +52,91 @@ export default function StudentWork() {
 
             return {
                 ...prevState,
-                [studentWorkId]: newTotal,                                                                                                             
+                [studentWorkId]: newTotal,
             };
         });
     };
 
-    console.log(questionScore);
-    console.log(answertotalGrade);
+  
 
     return (
         <div className="flex">
-            <div className="flex-grow p-10 pt-20">
-                {selectedExam.student_work[selectedStudentWorkIndex].answers.map((q, i) => (
-                    <div key={i} className="space-y-5 mb-16">
+            <div className="flex-grow p-10 ">
+        
+                {
+                selectedExam.student_work[
+                    selectedStudentWorkIndex
+                ].answers.map((q, i) => (
+<>
+                   {q.type === "text" && <div key={i} className="space-y-5 mb-16">
                         <div className="pb-6 border-b-[2px] border-purple-500">
                             <div className="text-xl text-gray-800 font-semibold">
                                 Question {q.question_id}
                             </div>
                         </div>
-                        <p className="text-gray-700 font-semibold text-lg pt-8 capitalize">
-                            {q.question}
+                        <p className="text-gray-700  text-xl pt-8 capitalize font-bold">
+                            {q.question} 
                         </p>
                         <div
                             className={`flex gap-8 p-4 bg-gray-50 ${
                                 isWrong[q.answer_id] === "wrong"
                                     ? "bg-red-50"
-                                    : isWrong[q.answer_id] === "correct" && "bg-green-50"
+                                    : isWrong[q.answer_id] === "correct" &&
+                                      "bg-green-100"
                             }`}
                         >
-                            <p className="bg-white px-4 py-2 shadow-md text-blue-900 font-bold capitalize text-lg max-w-[600px] w-[600px] h-fit self-center rounded-md">
-                                {q.answer}
+                            <p className="space-y-4">
+                                {q.answer.map((awr,i)=>(
+                                    <span 
+key={i}
+                                    className="block bg-white px-4 py-2  text-blue-900 font-semibold capitalize text-lg max-w-[600px] w-[600px] h-fit self-center rounded-md">{awr}</span>
+                                ))}
                             </p>
 
                             <div className="space-y-6">
                                 <button
                                     className={`block ${
-                                        isWrong[q.answer_id] === "correct" ? "pointer-events-none" : ""
+                                        isWrong[q.answer_id] === "correct"
+                                            ? "pointer-events-none"
+                                            : ""
                                     }`}
-                                    onClick={() => handleGradeChange(q.answer_id, "correct", q.score)}
+                                    onClick={() =>
+                                        handleGradeChange(
+                                            q.answer_id,
+                                            "correct",
+                                            q.score
+                                        )
+                                    }
                                     type="button"
                                 >
                                     <CheckIcon
                                         className={`w-9 text-green-500" ${
-                                            isWrong[q.answer_id] === "correct" ? "text-gray-400" : "text-green-500"
+                                            isWrong[q.answer_id] === "correct"
+                                                ? "text-gray-400"
+                                                : "text-green-500"
                                         }`}
                                     />
                                 </button>
                                 <button
                                     className={`block ${
-                                        isWrong[q.answer_id] === "wrong" ? "pointer-events-none" : ""
+                                        isWrong[q.answer_id] === "wrong"
+                                            ? "pointer-events-none"
+                                            : ""
                                     }`}
-                                    onClick={() => handleGradeChange(q.answer_id, "wrong", q.score)}
+                                    onClick={() =>
+                                        handleGradeChange(
+                                            q.answer_id,
+                                            "wrong",
+                                            q.score
+                                        )
+                                    }
                                     type="button"
                                 >
                                     <XMarkIcon
                                         className={`w-9 text-red-500" ${
-                                            isWrong[q.answer_id] === "wrong" ? "text-gray-400" : "text-red-500"
+                                            isWrong[q.answer_id] === "wrong"
+                                                ? "text-gray-400"
+                                                : "text-red-500"
                                         }`}
                                     />
                                 </button>
@@ -119,10 +147,16 @@ export default function StudentWork() {
                                 Answer Score
                             </span>
                             <span className="text-xl text-blue-700 font-bold">
-                                {isWrong[q.answer_id] === "wrong" ? 0 : isWrong[q.answer_id] === "correct" ? q.score : "__"}
+                                {isWrong[q.answer_id] === "wrong"
+                                    ? 0
+                                    : isWrong[q.answer_id] === "correct"
+                                    ? q.score
+                                    : "__"}
                             </span>
                         </div>
-                    </div>
+                    </div>}
+                    </>
+
                 ))}
                 <PaginationGrading
                     prevPage={prevStudentWork}
@@ -130,6 +164,7 @@ export default function StudentWork() {
                     currentPage={selectedStudentWorkIndex}
                     Pagelength={selectedExam.student_work.length}
                 />
+               
             </div>
 
             <GradeStudentInfo

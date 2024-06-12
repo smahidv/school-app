@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import axiosClient from "../../../axios";
 import { useStateContext } from "../../../contexts/ContextProvider";
+import ShowGrade from "../studentComponents/ShowGrade";
 
 export default function StudentSubject() {
     const [exams, setExams] = useState([]);
@@ -121,28 +122,31 @@ export default function StudentSubject() {
                                     {e.expire_date}
                                 </li>
                             </ul>
-                            <div
-                                className={`rounded-md py-2 px-4 mt-6 mb-4 w-fit ${
-                                    e.status === "Upcoming" ||
-                                    e.status === "Finished"
-                                        ? "bg-gray-200 text-gray-600 cursor-not-allowed"
-                                        : "bg-green-500 text-white"
-                                }`}
-                            >
-                                {e.status === "Ongoing" ? (
-                                    <NavLink
-                                     to={`/exam/${e.exam_id}`}
-                                     target="_blank"
-                                     >
+                            <div className="flex gap-4 items-center">
+                                <div
+                                    className={`rounded-md py-2 px-4 mt-6 mb-4 w-fit ${
+                                        e.status === "Upcoming" ||
+                                        e.status === "Finished"
+                                            ? "bg-gray-200 text-gray-600 cursor-not-allowed"
+                                            : "bg-green-500 text-white"
+                                    }`}
+                                >
+                                    {e.status === "Ongoing" ? (
+                                        <NavLink
+                                            to={`/exam/${e.exam_id}`}
+                                            target="_blank"
+                                        >
+                                            <span className="font-semibold">
+                                                Take the Exam
+                                            </span>
+                                        </NavLink>
+                                    ) : (
                                         <span className="font-semibold">
                                             Take the Exam
                                         </span>
-                                    </NavLink>
-                                ) : (
-                                    <span className="font-semibold">
-                                        Take the Exam
-                                    </span>
-                                )}
+                                    )}
+                                </div>
+                               {e.status === "Finished" &&  <ShowGrade />}
                             </div>
                         </div>
                     ))

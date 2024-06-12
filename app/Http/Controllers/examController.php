@@ -156,7 +156,7 @@ class examController extends Controller
         $validator = Validator::make($data, [
             'question' => 'required|string',
             'type' => ['required', new Enum(QuestionTypeEnum::class)],
-            'correct_option' => 'nullable|array',
+            // 'correct_option' => 'nullable|array',
             'score' => 'required|numeric',
             'description' => 'nullable|string',
             'data' => 'present',

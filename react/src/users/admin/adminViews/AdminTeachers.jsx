@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 export default function AdminTeachers() {
     const [teachers, setTeachers] = useState([]);
-    const [meta, setMeta] = useState({});
+    const [ setMeta] = useState({});
     const [showMore, setShowMore] = useState([]);
     const teacher = true;
     const getTeachers = (url) => {

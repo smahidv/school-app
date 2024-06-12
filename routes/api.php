@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\examController;
 use App\Http\Controllers\FieldController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\moduleController;
 use App\Http\Controllers\studentController;
 use App\Http\Controllers\TeacherController;
@@ -54,6 +55,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('TeacherClassModule', [ClassRoomController::class, 'getTeacherClass']);
         Route::get('/teacher-exams', [examController::class, 'getExamsForTeachers']);
         Route::get('/getAnswers', [AnswerController::class, 'getAnswers']);
+        Route::get('/getStudents', [AnswerController::class, 'getStudents']);
+        Route::put('/update-total-grade', [GradeController::class, 'updateTotalGrade']);
+        Route::get('/getGrades', [GradeController::class, 'getGrades']);
+
+
 
 
     });

@@ -89,7 +89,7 @@ export default function TeacherDashboard() {
                     </div>
                 </div>
             ) : (
-                <div className="grid md:grid-cols-4 gap-8">
+                <div className="grid md:grid-cols-5 gap-8">
                     {teacherClassroom &&
                         teacherClassroom.map((classItem, i) => (
                             <div
@@ -100,7 +100,7 @@ export default function TeacherDashboard() {
                                     <LazyLoadImage
                                         src={themes[i % themes.length]}
                                         alt={`${classItem.class_name} theme`}
-                                        className="w-full h-[250px] object-cover rounded-md"
+                                        className="w-full h-[150px] object-cover rounded-md"
                                         effect="blur"
                                         
                                     />
@@ -113,7 +113,7 @@ export default function TeacherDashboard() {
                                         </p>
                                     </div>
                                 </div>
-                                <div className="w-fit ml-auto p-4 mt-6 group cursor-pointer">
+                                <div className="w-fit ml-auto p-4 mt-2 group cursor-pointer">
                                     <NavLink
                                         to={`/t/c/${classItem.class_id}/${classItem.module_id}`}
                                         onClick={() => handleChoosenModuleClass(classItem)}

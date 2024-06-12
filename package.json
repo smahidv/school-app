@@ -13,6 +13,7 @@
     "dependencies": {
         "react-blurhash": "^0.3.0",
         "react-lazy-load-image-component": "^1.6.0",
-        "uuidv4": "^6.2.13"
+        "uuidv4": "^6.2.13",
+        "victory": "^37.0.2"
     }
 }

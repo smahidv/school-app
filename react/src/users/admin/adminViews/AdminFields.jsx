@@ -9,7 +9,7 @@ export default function AdminFields() {
     const [loading, setLoading] = useState(false);
 
     const onDeleteClick = (id) => {
-        if (window.confirm("Are you sure you want to delete this field?")) {
+        if (window.confirm("Are you sure you want to delete this course?")) {
             axiosClient.delete(`/field/${id}`).then(() => {
                 getFields();
                 // showToast('The survey was deleted');
